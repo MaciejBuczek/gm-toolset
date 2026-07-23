@@ -11,5 +11,10 @@ services:
         build:
             context: .
             dockerfile: Services/Character/Character.API/Dockerfile
+    identity.api:
+        image: ${DOCKER_REGISTRY-}identityapi
+        build:
+            context: .
+            dockerfile: Services/Identity/Identity.API/Dockerfile
 volumes:    
     postgres:
