@@ -16,5 +16,7 @@ services:
         build:
             context: .
             dockerfile: Services/Identity/Identity.API/Dockerfile
+    identity.db:
+        image: postgres
 volumes:    
     postgres:

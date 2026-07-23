@@ -41,14 +41,28 @@ services:
             - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
         depends_on:
             - character.db
+    identity.db:
+        container_name: identity.db
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=IdentityDB
+        ports:
+            - 6000:5432
+        restart: always
+        volumes:
+            - postgres:/var/lib/postgresql/data/
     identity.api:
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - ASPNETCORE_HTTP_PORTS=8080
             - ASPNETCORE_HTTPS_PORTS=8081    
+            - ConnectionStrings__Database=Server=identity.db;Port=5432;Database=IdentityDB;User Id=postgres;Password=postgres;Include Error Detail=true
         ports:
             - 5000:8080
             - 5050:8081
         volumes:
             - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-            - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+            - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro 
+        depends_on:
+            - identity.db
