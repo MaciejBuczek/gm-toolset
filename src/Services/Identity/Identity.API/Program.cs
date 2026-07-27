@@ -1,18 +1,17 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString(Constants.ConnectionStringName) ?? string.Empty));
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
-
+builder.Services.SetupIdentity(builder.Configuration.GetConnectionString(Constants.ConnectionStringName) ?? string.Empty);
 builder.Services.SetupDI();
+builder.Services.AddHandlers();
+builder.Services.AddCarter();
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 var app = builder.Build();
+
+app.UseExceptionHandler(options => { });
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -25,6 +24,17 @@ if (app.Environment.IsDevelopment())
     await dbSetupHelper.EnsureRolesAreCreated(app);
 }
 
-app.UseHttpsRedirection();
+app.MapGet("/appinfo", () =>
+{
+    var appInfo = new
+    {
+        ServiceName = Assembly.GetExecutingAssembly().GetName().Name,
+        Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+    };
+
+    return appInfo;
+});
+
+app.MapCarter();
 
 app.Run();

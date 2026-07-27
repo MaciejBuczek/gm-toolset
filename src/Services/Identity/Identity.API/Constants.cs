@@ -4,6 +4,7 @@
     {
         public const string DefaultSchema = "Identity";
         public const string ConnectionStringName = "Database";
+        public const string ExceptionSeparator = "|";
 
         public static class Roles
         {
