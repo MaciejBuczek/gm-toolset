@@ -19,4 +19,5 @@ services:
     identity.db:
         image: postgres
 volumes:    
-    postgres:
+    character-postgres:
+    identity-postgres:

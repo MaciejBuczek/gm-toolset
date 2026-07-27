@@ -5,10 +5,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString(builder.Configuration.GetConnectionString(Constants.ConnectionStringName) ?? string.Empty)));
+    options.UseNpgsql(builder.Configuration.GetConnectionString(Constants.ConnectionStringName) ?? string.Empty));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.SetupDI();
 
 var app = builder.Build();
 
