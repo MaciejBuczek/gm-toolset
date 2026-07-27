@@ -6,6 +6,8 @@
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.HasDefaultSchema(Constants.DefaultSchema);
+
+            base.OnModelCreating(builder);
         }
     }
 }
