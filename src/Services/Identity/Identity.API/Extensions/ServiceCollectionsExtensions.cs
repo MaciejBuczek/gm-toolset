@@ -1,12 +1,16 @@
-﻿using Common.Mediator.Pipelines;
-
-namespace Identity.API.Extensions
+﻿namespace Identity.API.Extensions
 {
     public static class ServiceCollectionsExtensions
     {
         public static void SetupDI(this IServiceCollection services)
         {
             services.AddSingleton<DbSetupHelper>();
+            services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
+        }
+
+        public static void SetupOptions(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<Jwt>(configuration.GetSection(nameof(Jwt)));
         }
 
         public static void SetupIdentity(this IServiceCollection services, string connectionString)

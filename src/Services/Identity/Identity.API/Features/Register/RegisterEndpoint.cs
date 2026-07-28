@@ -1,4 +1,4 @@
-﻿namespace Identity.API.Register
+﻿namespace Identity.API.Features.Register
 {
     public class RegisterEndpoint : ICarterModule
     {
@@ -15,6 +15,7 @@
                 var command = request.Adapt<RegisterCommand>();
                 var result = await handler.Handle(command, cancellationToken);
                 var response = result.Adapt<RegisterResponse>();
+
                 return Results.Created();
             })
             .WithName("Register")

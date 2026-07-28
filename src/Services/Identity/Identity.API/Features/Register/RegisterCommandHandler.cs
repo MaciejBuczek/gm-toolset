@@ -1,4 +1,4 @@
-﻿namespace Identity.API.Register
+﻿namespace Identity.API.Features.Register
 {
     internal record RegisterCommandResult(bool Succeded);
     internal record RegisterCommand(string Username, string Email, string Password) : ICommand<RegisterCommandResult>;

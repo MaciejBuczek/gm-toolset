@@ -1,4 +1,4 @@
-﻿namespace Identity.API.Register
+﻿namespace Identity.API.Features.Register
 {
     internal class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     {

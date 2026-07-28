@@ -4,6 +4,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.SetupIdentity(builder.Configuration.GetConnectionString(Constants.ConnectionStringName) ?? string.Empty);
 builder.Services.SetupDI();
+builder.Services.SetupOptions(builder.Configuration);
 builder.Services.AddHandlers();
 builder.Services.AddCarter();
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);

@@ -58,6 +58,10 @@ services:
             - ASPNETCORE_HTTP_PORTS=8080
             - ASPNETCORE_HTTPS_PORTS=8081    
             - ConnectionStrings__Database=Server=identity.db;Port=5432;Database=IdentityDB;User Id=postgres;Password=postgres;Include Error Detail=true
+            - Jwt__Issuer=identity.api
+            - Jwt__Audience=gm-toolset
+            - Jwt__SecretKey=supersecretkeyyoushouldnotcommit
+            - Jwt__ExpirationInMinutes=60
         ports:
             - 5000:8080
             - 5050:8081
