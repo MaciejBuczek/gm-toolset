@@ -22,7 +22,11 @@
             .WithTags("Identity")
             .Produces<RegisterCommandResult>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi(operation =>
+            {
+                operation.RequestBody = DefaultRequestProvider.RegisterRequest();
+                return operation;
+            });
         }
     }
 }
