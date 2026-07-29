@@ -4,9 +4,10 @@
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public required AppUser User { get; set; }
+        public AppUser? User { get; set; }
 
         public required string Token { get; set; }
-        public required DateTime ExpirationDate { get; set; }
+        public DateTime ExpirationDate { get; set; }
+        public bool IsExpired { get; set; }
     }
 }

@@ -23,3 +23,5 @@ global using System.Text;
 global using Common.Mediator.Pipelines;
 global using Identity.API.Services;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using System.Security.Cryptography;
+global using Identity.API.Features.Login;

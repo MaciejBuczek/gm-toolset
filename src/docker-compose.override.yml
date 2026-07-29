@@ -61,7 +61,8 @@ services:
             - Jwt__Issuer=identity.api
             - Jwt__Audience=gm-toolset
             - Jwt__SecretKey=supersecretkeyyoushouldnotcommit
-            - Jwt__ExpirationInMinutes=60
+            - Jwt__ExpirationInMinutes= 10
+            - Jwt__RefreshTokenExpirationInDays=7
         ports:
             - 5000:8080
             - 5050:8081

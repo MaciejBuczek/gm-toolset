@@ -2,22 +2,25 @@
 {
     internal record LoginCommandResult(string Token, string RefreshToken);
     internal record LoginCommand(string Username, string Email, string Password) : IQuery<LoginCommandResult>;
-    internal class LoginCommandHandler(UserManager<AppUser> UserManager, ITokenGeneratorService TokenGeneratorService) : IQueryHandler<LoginCommand, LoginCommandResult>
+    internal class LoginCommandHandler(UserManager<AppUser> UserManager, IRefreshTokenRepository RefreshTokenRepository, ITokenGeneratorService TokenGeneratorService)
+        : IQueryHandler<LoginCommand, LoginCommandResult>
     {
         public async Task<LoginCommandResult> Handle(LoginCommand request, CancellationToken cancellationToken = default)
         {
             var user = (await UserManager.FindByNameAsync(request.Username) ?? await UserManager.FindByEmailAsync(request.Email)) ??
-                    throw new NotFoundException($"{request.Username ?? request.Email} not found");
+                throw new UnauthorizedException("Invalid user or password");
 
             if (await UserManager.CheckPasswordAsync(user, request.Password))
             {
                 var roles = await UserManager.GetRolesAsync(user);
                 var token = TokenGeneratorService.GenerateToken(user.Id, user.UserName, user.Email, roles);
+                var refreshToken = TokenGeneratorService.GenerateRefreshToken();
+                await RefreshTokenRepository.SaveRefreshTokenToDbAsync(user, refreshToken, cancellationToken);
 
-                return new LoginCommandResult(token, string.Empty);
+                return new LoginCommandResult(token, refreshToken);
             }
 
-            throw new UnauthorizedException("Invalid password");
+            throw new UnauthorizedException("Invalid user or password");
         }
     }
 }

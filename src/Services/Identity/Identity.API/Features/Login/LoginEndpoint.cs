@@ -1,6 +1,6 @@
 ﻿namespace Identity.API.Features.Login
 {
-    public class LoginCommandEndpoint : ICarterModule
+    public class LoginEndpoint : ICarterModule
     {
         public record LoginCommandResponse(string Token, string RefreshToken);
         public record LoginCommandRequest(string Username, string Email, string Password);
@@ -22,7 +22,6 @@
             .WithTags("Identity")
             .Produces<LoginCommandResult>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
-            .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
             .WithOpenApi();
         }

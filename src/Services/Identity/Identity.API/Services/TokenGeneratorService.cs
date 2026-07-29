@@ -4,7 +4,7 @@
     {
         public string GenerateRefreshToken()
         {
-            throw new NotImplementedException();
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
         }
 
         public string GenerateToken(Guid userId, string? username, string? email, IEnumerable<string> roles)

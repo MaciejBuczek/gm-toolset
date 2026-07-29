@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Identity.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260729081345_Create_RefreshTokens_Table")]
+    [Migration("20260729103928_Create_RefreshTokens_Table")]
     partial class Create_RefreshTokens_Table
     {
         /// <inheritdoc />
@@ -100,10 +100,15 @@ namespace Identity.API.Migrations
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("IsExpired")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("Token")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");

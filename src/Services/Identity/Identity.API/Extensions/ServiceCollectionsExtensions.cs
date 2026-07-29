@@ -6,6 +6,7 @@
         {
             services.AddSingleton<DbSetupHelper>();
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         }
 
         public static void SetupOptions(this IServiceCollection services, IConfiguration configuration)
