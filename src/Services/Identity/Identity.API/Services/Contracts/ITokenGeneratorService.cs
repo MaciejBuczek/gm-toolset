@@ -2,7 +2,7 @@
 {
     internal interface ITokenGeneratorService
     {
-        string GenerateToken(string userId, string? username, string? email, IEnumerable<string> roles);
+        string GenerateToken(Guid userId, string? username, string? email, IEnumerable<string> roles);
         string GenerateRefreshToken();
     }
 }

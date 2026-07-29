@@ -2,7 +2,7 @@
 {
     internal record LoginCommandResult(string Token, string RefreshToken);
     internal record LoginCommand(string Username, string Email, string Password) : IQuery<LoginCommandResult>;
-    internal class LoginCommandHandler(UserManager<ApplicationUser> UserManager, ITokenGeneratorService TokenGeneratorService) : IQueryHandler<LoginCommand, LoginCommandResult>
+    internal class LoginCommandHandler(UserManager<AppUser> UserManager, ITokenGeneratorService TokenGeneratorService) : IQueryHandler<LoginCommand, LoginCommandResult>
     {
         public async Task<LoginCommandResult> Handle(LoginCommand request, CancellationToken cancellationToken = default)
         {

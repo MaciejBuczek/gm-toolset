@@ -24,16 +24,16 @@
 
             ServiceScope ??= ResolveServiceScope(app);
 
-            var roleManager = ServiceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>()
+            var roleManager = ServiceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>()
                 ?? throw new InvalidOperationException("RoleManager<IdentityRole> is not registered in the service provider.");
 
             if (!await roleManager.RoleExistsAsync(Constants.Roles.Admin))
             {
-                await roleManager.CreateAsync(new IdentityRole(Constants.Roles.Admin));
+                await roleManager.CreateAsync(new IdentityRole<Guid>(Constants.Roles.Admin));
             }
             if(!await roleManager.RoleExistsAsync(Constants.Roles.User))
             {
-                await roleManager.CreateAsync(new IdentityRole(Constants.Roles.User));
+                await roleManager.CreateAsync(new IdentityRole<Guid>(Constants.Roles.User));
             }
         }
     }

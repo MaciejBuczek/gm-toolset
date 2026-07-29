@@ -17,7 +17,7 @@
         {
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(connectionString));
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<AppUser, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
         }

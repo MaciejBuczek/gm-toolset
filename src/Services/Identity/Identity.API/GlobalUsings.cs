@@ -22,3 +22,4 @@ global using System.Security.Claims;
 global using System.Text;
 global using Common.Mediator.Pipelines;
 global using Identity.API.Services;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;

@@ -1,6 +1,6 @@
 ﻿namespace Identity.API.Data
 {
-    public sealed class ApplicationUser : IdentityUser
+    public sealed class AppUser : IdentityUser<Guid>
     {
     }
 }

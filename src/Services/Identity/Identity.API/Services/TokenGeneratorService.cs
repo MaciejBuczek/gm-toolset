@@ -7,7 +7,7 @@
             throw new NotImplementedException();
         }
 
-        public string GenerateToken(string userId, string? username, string? email, IEnumerable<string> roles)
+        public string GenerateToken(Guid userId, string? username, string? email, IEnumerable<string> roles)
         {
             var signingKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(JwtOptions.Value.SecretKey));
@@ -17,7 +17,7 @@
             var roleClaims = roles.Select(role => new Claim(ClaimTypes.Role, role));
             var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Sub, userId),
+                new(JwtRegisteredClaimNames.Sub, userId.ToString()),
                 new(JwtRegisteredClaimNames.UniqueName, username?? string.Empty),
                 new(JwtRegisteredClaimNames.Email, email?? string.Empty),
             };

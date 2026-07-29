@@ -3,11 +3,11 @@
     internal record RegisterCommandResult(bool Succeded);
     internal record RegisterCommand(string Username, string Email, string Password) : ICommand<RegisterCommandResult>;
 
-    internal class RegisterCommandHandler(UserManager<ApplicationUser> UserManager, AppDbContext DbContext) : ICommandHandler<RegisterCommand, RegisterCommandResult>
+    internal class RegisterCommandHandler(UserManager<AppUser> UserManager, AppDbContext DbContext) : ICommandHandler<RegisterCommand, RegisterCommandResult>
     {
         public async Task<RegisterCommandResult> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var user = new ApplicationUser
+            var user = new AppUser
             {
                 UserName = request.Username,
                 Email = request.Email,
