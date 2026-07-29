@@ -7,6 +7,7 @@ on:
 
 env:
   GATEWAY_CONTAINER_APP_NAME: gateway-api
+  IDENTITY_CONTAINER_APP_NAME: identity-api
   CHARACTER_CONTAINER_APP_NAME: character-api
   RESOURCE_GROUP: gm-toolset
 
@@ -14,33 +15,82 @@ jobs:
   build_and_publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Build and push Gateway.API image
-        run: |
-          docker login --username maciejbuczek --password ${{ secrets.GHCR }} ghcr.io
-          docker build -f ./src/Gateway/Gateway.API/Dockerfile . \
-            -t ghcr.io/maciejbuczek/gateway.api:latest
-          docker push ghcr.io/maciejbuczek/gateway.api:latest
-      
-      - name: Build and push Character.API image
-        run: |
-          docker login --username maciejbuczek --password ${{ secrets.GHCR }} ghcr.io
-          docker build -f ./src/Services/Character/Character.API/Dockerfile . \
-            -t ghcr.io/maciejbuczek/character.api:latest
-          docker push ghcr.io/maciejbuczek/character.api:latest
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR }} 
+          
+      - name: Build and push Gateway.API
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./src/Gateway/Gateway.API/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/maciejbuczek/gateway.api:latest
+          cache-from: type=gha,scope=gateway
+          cache-to: type=gha,mode=max,scope=gateway
+          
+      - name: Build and push Identity.API
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./src/Services/Identity/Identity.API/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/maciejbuczek/identity.api:latest
+          cache-from: type=gha,scope=identity
+          cache-to: type=gha,mode=max,scope=identity
 
+      - name: Build and push Character.API
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./src/Services/Character/Character.API/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/maciejbuczek/character.api:latest
+          cache-from: type=gha,scope=character
+          cache-to: type=gha,mode=max,scope=character
+          
       - name: Azure Login
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+    
+      - name: Install EF Tool
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Apply Identity database migrations
+        run: |
+          dotnet ef database update \
+            --project ./src/Services/Identity/Identity.API \
+            --startup-project ./src/Services/Identity/Identity.API
+        env:
+          ConnectionStrings__Database: ${{ secrets.IDENTITY_DB_CONNECTION }}
+    
       - name: Deploy Gateway.API to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
           imageToDeploy: ghcr.io/maciejbuczek/gateway.api:latest
           resourceGroup: ${{ env.RESOURCE_GROUP }}
           containerAppName: ${{ env.GATEWAY_CONTAINER_APP_NAME }}
+
+      - name: Deploy Identity.API to Azure Container Apps
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          imageToDeploy: ghcr.io/maciejbuczek/identity.api:latest
+          resourceGroup: ${{ env.RESOURCE_GROUP }}
+          containerAppName: ${{ env.IDENTITY_CONTAINER_APP_NAME }}
 
       - name: Deploy Character.API to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
