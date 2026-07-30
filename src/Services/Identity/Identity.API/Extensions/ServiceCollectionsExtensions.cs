@@ -17,7 +17,10 @@
         public static void SetupIdentity(this IServiceCollection services, string connectionString)
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(connectionString));
+                options.UseNpgsql(connectionString, options =>
+                {
+                    options.MigrationsHistoryTable(Constants.DefaultMigrationsHistoryTable, Constants.DefaultSchema);
+                }));
             services.AddIdentity<AppUser, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();

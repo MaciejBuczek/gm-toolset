@@ -3,6 +3,7 @@
     public static class Constants
     {
         public const string DefaultSchema = "Identity";
+        public const string DefaultMigrationsHistoryTable = "__EFMigrationsHistory";
         public const string ConnectionStringName = "Database";
         public const string ExceptionSeparator = "|";
 
