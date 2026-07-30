@@ -1,7 +1,11 @@
 name: Database Migration
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Docker Image CI for GHCR
+    types:
+      - completed
 
 jobs:
   migrate:
