@@ -72,7 +72,10 @@ jobs:
     
       - name: Install EF Tool
         run: dotnet tool install --global dotnet-ef
-
+        
+      - name: Restore Identity API
+        run: dotnet restore ./src/Services/Identity/Identity.API/Identity.API.csproj
+        
       - name: Apply Identity database migrations
         run: |
           dotnet ef database update \
