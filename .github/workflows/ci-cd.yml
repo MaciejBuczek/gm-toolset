@@ -64,25 +64,6 @@ jobs:
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-    
-      - name: Install EF Tool
-        run: dotnet tool install --global dotnet-ef
-        
-      - name: Restore Identity API
-        run: dotnet restore ./src/Services/Identity/Identity.API/Identity.API.csproj
-        
-      - name: Apply Identity database migrations
-        run: |
-          dotnet ef database update \
-            --project ./src/Services/Identity/Identity.API \
-            --startup-project ./src/Services/Identity/Identity.API
-        env:
-          ConnectionStrings__Database: ${{ secrets.IDENTITY_DB_CONNECTION }}
     
       - name: Deploy Gateway.API to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
