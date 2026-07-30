@@ -8,12 +8,13 @@ on:
       - completed
 
 env:
-  DB_NAME: identity-api
+  DB_NAME: gm-toolset-db
   RESOURCE_GROUP: gm-toolset
-  RULE_NAME: GitHub-Migrate
+  RULE_NAME: gitHub-migrate
 
 jobs:
   migrate:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -47,8 +48,8 @@ jobs:
         run: |
           az postgres flexible-server firewall-rule create \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --name ${{ env.DB_NAME }} \
-            --rule-name ${{env.RULE_NAME}} \
+            --server-name ${{ env.DB_NAME }} \
+            --name ${{env.RULE_NAME}} \
             --start-ip-address ${{ steps.ip.outputs.ip }} \
             --end-ip-address ${{ steps.ip.outputs.ip }}
 
@@ -65,6 +66,6 @@ jobs:
         run: |
           az postgres flexible-server firewall-rule delete \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --name ${{ env.DB_NAME }} \
-            --rule-name ${{env.RULE_NAME}} \
+            --server-name ${{ env.DB_NAME }} \
+            --name ${{env.RULE_NAME}} \
             --yes
