@@ -7,6 +7,11 @@ on:
     types:
       - completed
 
+env:
+  DB_NAME: identity-api
+  RESOURCE_GROUP: gm-toolset
+  RULE_NAME: GitHub-Migrate
+
 jobs:
   migrate:
     runs-on: ubuntu-latest
@@ -41,9 +46,9 @@ jobs:
       - name: Allow runner IP
         run: |
           az postgres flexible-server firewall-rule create \
-            --resource-group gm-toolset \
-            --name identity-postgres \
-            --rule-name github-actions \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --name ${{ env.DB_NAME }} \
+            --rule-name ${{env.RULE_NAME}} \
             --start-ip-address ${{ steps.ip.outputs.ip }} \
             --end-ip-address ${{ steps.ip.outputs.ip }}
 
@@ -59,7 +64,7 @@ jobs:
         if: always()
         run: |
           az postgres flexible-server firewall-rule delete \
-            --resource-group gm-toolset \
-            --name identity-postgres \
-            --rule-name github-actions \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --name ${{ env.DB_NAME }} \
+            --rule-name ${{env.RULE_NAME}} \
             --yes
