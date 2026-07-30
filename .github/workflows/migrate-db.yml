@@ -1,0 +1,61 @@
+name: Database Migration
+
+on:
+  workflow_dispatch:
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install EF tools
+        run: |
+          dotnet tool install --global dotnet-ef
+
+      - name: Restore
+        run: |
+          dotnet restore ./src/Services/Identity/Identity.API/Identity.API.csproj
+
+      - name: Get runner IP
+        id: ip
+        run: |
+          echo "ip=$(curl -s https://api.ipify.org)" >> $GITHUB_OUTPUT
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Allow runner IP
+        run: |
+          az postgres flexible-server firewall-rule create \
+            --resource-group gm-toolset \
+            --name identity-postgres \
+            --rule-name github-actions \
+            --start-ip-address ${{ steps.ip.outputs.ip }} \
+            --end-ip-address ${{ steps.ip.outputs.ip }}
+
+      - name: Run migrations
+        run: |
+          dotnet ef database update \
+            --project ./src/Services/Identity/Identity.API \
+            --startup-project ./src/Services/Identity/Identity.API
+        env:
+          ConnectionStrings__Database: ${{ secrets.IDENTITY_DB_CONNECTION }}
+
+      - name: Remove runner IP
+        if: always()
+        run: |
+          az postgres flexible-server firewall-rule delete \
+            --resource-group gm-toolset \
+            --name identity-postgres \
+            --rule-name github-actions \
+            --yes
