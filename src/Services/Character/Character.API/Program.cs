@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMartenConnection(builder.Configuration.GetConnectionString("Database")?? string.Empty);
+builder.Services.AddMartenConnection(builder.Configuration);
 builder.Services.AddCharacterRepository();
 builder.Services.AddHandlers();
 builder.Services.AddCarter();

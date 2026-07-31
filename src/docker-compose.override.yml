@@ -33,7 +33,8 @@ services:
             - ASPNETCORE_ENVIRONMENT=Development
             - ASPNETCORE_HTTP_PORTS=8080
             - ASPNETCORE_HTTPS_PORTS=8081
-            - ConnectionStrings__Database=Server=character.db;Port=5432;Database=CharacterDB;User Id=postgres;Password=postgres;Include Error Detail=true
+            - Database__ConnectionString=Server=character.db;Port=5432;Database=CharacterDB;User Id=postgres;Password=postgres;Include Error Detail=true
+            - Database__Schema=character
         ports:
             - 5002:8080
             - 5052:8081
