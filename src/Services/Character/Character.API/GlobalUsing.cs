@@ -20,3 +20,4 @@ global using Marten.Exceptions;
 global using Character.API.Data;
 global using Character.API.Exceptions;
 global using Common.Exceptions;
+global using Character.API.ConfigurationOptions;

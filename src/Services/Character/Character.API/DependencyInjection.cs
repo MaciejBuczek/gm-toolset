@@ -2,14 +2,25 @@
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddMartenConnection(this IServiceCollection services, string connectionString)
+        public static IServiceCollection AddMartenConnection(this IServiceCollection services, ConfigurationManager configurationManager)
         {
-            if (string.IsNullOrEmpty(connectionString))
+            var appSetingsConfig = configurationManager.GetSection(nameof(Database)).Get<Database>();
+
+            if (string.IsNullOrEmpty(appSetingsConfig?.ConnectionString))
             {
-                throw new ApplicationException("Connection string is empty");
+                throw new ApplicationException("Database configuration is missing");
+            }
+            if (string.IsNullOrEmpty(appSetingsConfig?.Schema))
+            {
+                throw new ApplicationException("Schema name is empty");
             }
 
-            services.AddMarten(config => config.Connection(connectionString)).UseLightweightSessions();
+            services.AddMarten(config => 
+            {
+                config.Connection(appSetingsConfig.ConnectionString);
+                config.DatabaseSchemaName = appSetingsConfig.Schema;
+
+            }).UseLightweightSessions();
 
             return services;
         }
