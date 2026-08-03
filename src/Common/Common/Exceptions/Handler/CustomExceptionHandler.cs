@@ -26,7 +26,8 @@ namespace Common.Exceptions.Handler
 
                 NotFoundException =>
                     (exception.Message, exception.GetType().Name, httpContext.Response.StatusCode = StatusCodes.Status404NotFound),
-
+                UnauthorizedException =>
+                    (exception.Message, exception.GetType().Name, httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized),
                 _ =>
                     (exception.Message, exception.GetType().Name, httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError)
             };
