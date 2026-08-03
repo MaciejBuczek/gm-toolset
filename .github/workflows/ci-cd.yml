@@ -34,7 +34,7 @@ jobs:
           file: ./src/Gateway/Gateway.API/Dockerfile
           push: true
           tags: |
-            ghcr.io/maciejbuczek/gateway.api:latest
+            ghcr.io/maciejbuczek/gateway.api:${{ github.sha }}
           cache-from: type=gha,scope=gateway
           cache-to: type=gha,mode=max,scope=gateway
           
@@ -45,7 +45,7 @@ jobs:
           file: ./src/Services/Identity/Identity.API/Dockerfile
           push: true
           tags: |
-            ghcr.io/maciejbuczek/identity.api:latest
+            ghcr.io/maciejbuczek/identity.api:${{ github.sha }}
           cache-from: type=gha,scope=identity
           cache-to: type=gha,mode=max,scope=identity
 
@@ -56,7 +56,7 @@ jobs:
           file: ./src/Services/Character/Character.API/Dockerfile
           push: true
           tags: |
-            ghcr.io/maciejbuczek/character.api:latest
+            ghcr.io/maciejbuczek/character.api:${{ github.sha }}
           cache-from: type=gha,scope=character
           cache-to: type=gha,mode=max,scope=character
           
@@ -68,20 +68,20 @@ jobs:
       - name: Deploy Gateway.API to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
-          imageToDeploy: ghcr.io/maciejbuczek/gateway.api:latest
+          imageToDeploy: ghcr.io/maciejbuczek/gateway.api:${{ github.sha }}
           resourceGroup: ${{ env.RESOURCE_GROUP }}
           containerAppName: ${{ env.GATEWAY_CONTAINER_APP_NAME }}
 
       - name: Deploy Identity.API to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
-          imageToDeploy: ghcr.io/maciejbuczek/identity.api:latest
+          imageToDeploy: ghcr.io/maciejbuczek/identity.api:${{ github.sha }}
           resourceGroup: ${{ env.RESOURCE_GROUP }}
           containerAppName: ${{ env.IDENTITY_CONTAINER_APP_NAME }}
 
       - name: Deploy Character.API to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
-          imageToDeploy: ghcr.io/maciejbuczek/character.api:latest
+          imageToDeploy: ghcr.io/maciejbuczek/character.api:${{ github.sha }}
           resourceGroup: ${{ env.RESOURCE_GROUP }}
           containerAppName: ${{ env.CHARACTER_CONTAINER_APP_NAME }}
