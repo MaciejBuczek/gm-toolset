@@ -20,8 +20,10 @@
                 })
                 .WithName("DeleteCharacterById")
                 .WithTags("Character")
+                .RequireAuthorization()
                 .Produces<DeleteCharacterByIdResponse>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status404NotFound)
+                .ProducesProblem(StatusCodes.Status401Unauthorized)
                 .WithOpenApi();
         }
     }

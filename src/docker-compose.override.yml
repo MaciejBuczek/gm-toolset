@@ -35,6 +35,9 @@ services:
             - ASPNETCORE_HTTPS_PORTS=8081
             - Database__ConnectionString=Server=character.db;Port=5432;Database=CharacterDB;User Id=postgres;Password=postgres;Include Error Detail=true
             - Database__Schema=character
+            - JwtAuthenticationOptions__Issuer=identity.api
+            - JwtAuthenticationOptions__Audience=gm-toolset
+            - JwtAuthenticationOptions__Key=supersecretkeyyoushouldnotcommit
         ports:
             - 5002:8080
             - 5052:8081

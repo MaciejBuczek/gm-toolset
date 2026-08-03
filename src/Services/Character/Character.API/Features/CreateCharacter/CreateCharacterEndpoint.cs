@@ -21,8 +21,10 @@
                 })
                 .WithName("CreateCharacter")
                 .WithTags("Character")
+                .RequireAuthorization()
                 .Produces<CreateCharacterResponse>(StatusCodes.Status201Created)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
+                .ProducesProblem(StatusCodes.Status401Unauthorized)
                 .WithOpenApi(operation =>
                 {
                     operation.RequestBody = DefaultRequestProvider.CreateCharacterRequest();

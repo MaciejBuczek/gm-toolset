@@ -21,8 +21,10 @@
                 })
                 .WithName("UpdateCharacter")
                 .WithTags("Character")
+                .RequireAuthorization()
                 .Produces<CreateCharacterResponse>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status404NotFound)
+                .ProducesProblem(StatusCodes.Status401Unauthorized)
                 .WithOpenApi();
         }
     }
