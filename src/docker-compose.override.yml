@@ -46,6 +46,7 @@ services:
             - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
         depends_on:
             - character.db
+            - rabbitmq
     identity.db:
         container_name: identity.db
         environment:
@@ -76,3 +77,13 @@ services:
             - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro 
         depends_on:
             - identity.db
+            - rabbitmq
+    rabbitmq:
+        ports:
+            - 5672:5672
+            - 15672:15672
+        environment:
+            RABBITMQ_DEFAULT_USER: admin
+            RABBITMQ_DEFAULT_PASS: admin 
+        volumes:
+            - rabbitmq-data:/var/lib/rabbitmq
