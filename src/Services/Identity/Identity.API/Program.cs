@@ -14,7 +14,6 @@ var app = builder.Build();
 
 app.UseExceptionHandler(options => { });
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -24,17 +23,6 @@ if (app.Environment.IsDevelopment())
     await dbSetupHelper.EnsureMigrations(app);
     await dbSetupHelper.EnsureRolesAreCreated(app);
 }
-
-app.MapGet("/appinfo", () =>
-{
-    var appInfo = new
-    {
-        ServiceName = Assembly.GetExecutingAssembly().GetName().Name,
-        Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
-    };
-
-    return appInfo;
-});
 
 app.MapCarter();
 

@@ -14,21 +14,14 @@ builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseExceptionHandler(options => { });
-
-app.MapGet("/appinfo", () =>
-{
-    var appInfo = new
-    {
-        ServiceName = Assembly.GetExecutingAssembly().GetName().Name,
-        Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
-    };
-
-    return appInfo;
-});
 
 app.MapCarter();
 
