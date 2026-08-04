@@ -1,6 +1,6 @@
-﻿namespace Identity.API.Data
+﻿namespace Common.Messaging.Events.Sources
 {
-    public class AppUser : IdentityUser<Guid>, IHasDomainEvents
+    public abstract class DomainEventSource : IHasDomainEvents
     {
         private readonly List<DomainEvent> _domainEvents = [];
         public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
