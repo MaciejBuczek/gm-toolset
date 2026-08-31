@@ -1,4 +1,5 @@
 ﻿using Common.Messaging.Events;
+using Common.Messaging.Events.Services;
 using Common.Messaging.Events.Sources;
 using Common.Messaging.Options;
 using EasyNetQ;
@@ -21,11 +22,14 @@ namespace Common.Messaging
         {
             services.Scan(s => s.FromEntryAssembly()
                 .AddClasses(c => c.AssignableTo(typeof(IEventHandler<>)))
+                .AddClasses(c => c.AssignableTo(typeof(IIntegrationEventProjection<>)))
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
 
-            services.AddScoped<IDomainEventBuffer, DomainEventBuffer>();
-            services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+            services.AddScoped<IEventPublisher, EasyNetQPublisher>();
+            services.AddScoped<IDomainEventCollector, DomainEventCollector>();
+            services.AddScoped<IEventDispatcher<DomainEvent>, DomainEventDispatcher>();
+            services.AddScoped<IEventDispatcher<IntegrationEvent>, IntegrationEventDispatcher>();
         }
     }
 }

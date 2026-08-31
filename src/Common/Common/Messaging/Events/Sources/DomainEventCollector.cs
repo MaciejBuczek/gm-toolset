@@ -1,6 +1,6 @@
 ﻿namespace Common.Messaging.Events.Sources
 {
-    internal class DomainEventBuffer : IDomainEventBuffer
+    internal class DomainEventCollector : IDomainEventCollector
     {
         private readonly List<IHasDomainEvents> _eventSources = [];
 

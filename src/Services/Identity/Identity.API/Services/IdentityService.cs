@@ -1,6 +1,6 @@
 ﻿namespace Identity.API.Services
 {
-    public class IdentityService(UserManager<AppUser> UserManager, AppDbContext AbbDbContext, IDomainEventBuffer DomainEventBuffor) : IIdentityService
+    public class IdentityService(UserManager<AppUser> UserManager, AppDbContext AbbDbContext, IDomainEventCollector DomainEventBuffor) : IIdentityService
     {
         public async Task CreateUser(AppUser user, string password, CancellationToken cancellationToken = default)
         {
@@ -9,10 +9,7 @@
                 throw new ArgumentNullException(nameof(user));
             }
 
-            using var transaction = await AbbDbContext.Database.BeginTransactionAsync(cancellationToken);
-
-            user.RaiseDomainEvent(new UserCreatedDomainEvent(Guid.NewGuid(), user.UserName, user.Email));
-            DomainEventBuffor.AddEventSource(user);
+            using var transaction = await AbbDbContext.Database.BeginTransactionAsync(cancellationToken);         
 
             var identityResult = await UserManager.CreateAsync(user, password);
             if (!identityResult.Succeeded)
@@ -23,6 +20,9 @@
             await UserManager.AddToRoleAsync(user, Constants.Roles.User);
 
             await transaction.CommitAsync(cancellationToken);
+
+            user.RaiseDomainEvent(new UserCreatedDomainEvent(Guid.NewGuid(), user.UserName, user.Email));
+            DomainEventBuffor.AddEventSource(user);
         }
     }
 }

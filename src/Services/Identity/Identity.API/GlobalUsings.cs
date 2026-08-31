@@ -32,4 +32,5 @@ global using System.Security.Claims;
 global using System.Security.Cryptography;
 global using System.Text;
 global using System.Text.Json;
-global using Identity.API.Events;
+global using Common.Messaging.Events.Contracts.Identity;
+global using Common.Messaging.Events.Services;

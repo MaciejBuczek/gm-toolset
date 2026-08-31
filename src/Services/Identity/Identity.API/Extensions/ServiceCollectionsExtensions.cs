@@ -45,7 +45,10 @@ namespace Identity.API.Extensions
 
             services.Decorate(
                 typeof(IRequestHandler<,>),
-                typeof(DomainEventsRequestHandler<,>)); 
+                typeof(DomainEventsRequestHandler<,>));
+            services.Decorate(
+                typeof(IRequestHandler<,>),
+                typeof(IntegrationEventsRequestHandler<,>));
             services.Decorate(
                 typeof(IRequestHandler<,>),
                 typeof(ValidationRequestHandler<,>));

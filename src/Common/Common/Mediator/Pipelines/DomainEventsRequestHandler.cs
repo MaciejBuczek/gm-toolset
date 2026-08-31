@@ -1,4 +1,5 @@
 ﻿using Common.Messaging.Events;
+using Common.Messaging.Events.Services;
 using Common.Messaging.Events.Sources;
 
 namespace Common.Mediator.Pipelines
@@ -6,8 +7,8 @@ namespace Common.Mediator.Pipelines
     public sealed class DomainEventsRequestHandler<TRequest, TResponse>(
         IRequestHandler<TRequest, TResponse> InnerHandler,
         IEnumerable<IHasDomainEvents> EventSources,
-        IDomainEventDispatcher DomainEventDispatcher,
-        IDomainEventBuffer DomainEventBuffer) : IRequestHandler<TRequest, TResponse>
+        IEventDispatcher<DomainEvent> DomainEventDispatcher,
+        IDomainEventCollector DomainEventBuffer) : IRequestHandler<TRequest, TResponse>
     {
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken = default)
         {
