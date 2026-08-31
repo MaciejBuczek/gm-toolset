@@ -1,4 +1,6 @@
-﻿namespace Identity.API.Extensions
+﻿using Common.Messaging;
+
+namespace Identity.API.Extensions
 {
     public static class ServiceCollectionsExtensions
     {
@@ -7,6 +9,7 @@
             services.AddSingleton<DbSetupHelper>();
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddScoped<IIdentityService, IdentityService>();
         }
 
         public static void SetupOptions(this IServiceCollection services, IConfiguration configuration)
@@ -34,10 +37,18 @@
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
 
+            services.AddMessagingHandlers();
+
             services.AddValidatorsFromAssembly(
                 typeof(Program).Assembly,
                 includeInternalTypes: true);
 
+            services.Decorate(
+                typeof(IRequestHandler<,>),
+                typeof(DomainEventsRequestHandler<,>));
+            services.Decorate(
+                typeof(IRequestHandler<,>),
+                typeof(IntegrationEventsRequestHandler<,>));
             services.Decorate(
                 typeof(IRequestHandler<,>),
                 typeof(ValidationRequestHandler<,>));

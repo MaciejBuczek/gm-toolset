@@ -18,6 +18,9 @@ services:
             dockerfile: Services/Identity/Identity.API/Dockerfile
     identity.db:
         image: postgres
+    rabbitmq:
+        image: rabbitmq:3-management
 volumes:    
     character-postgres:
     identity-postgres:
+    rabbitmq-data:
