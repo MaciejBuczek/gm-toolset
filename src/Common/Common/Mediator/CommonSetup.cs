@@ -7,10 +7,10 @@ namespace Common.Mediator
 {
     public static class CommonSetup
     {
-        public static IServiceCollection AddRequestHandlers(this IServiceCollection services)
+        public static IServiceCollection AddRequestHandlers(this IServiceCollection services, Assembly assembly)
         {
             services.Scan(scan => scan
-                .FromEntryAssembly()
+                .FromAssemblies(assembly)
                 .AddClasses(classes => classes.AssignableTo(typeof(IRequestHandler<,>)), publicOnly: false)
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
@@ -18,10 +18,10 @@ namespace Common.Mediator
             return services;
         }
 
-        public static IServiceCollection AddValidators(this IServiceCollection services)
+        public static IServiceCollection AddValidators(this IServiceCollection services, Assembly assembly)
         {
             services.AddValidatorsFromAssembly(
-                Assembly.GetExecutingAssembly(),
+                assembly,
                 includeInternalTypes: true);
 
             return services;
@@ -29,32 +29,48 @@ namespace Common.Mediator
 
         public static IServiceCollection DecorateRequestWithLogging(this IServiceCollection services)
         {
-            services.Decorate(
+            if (services.HasRegisteredRequestHandlers())
+            {
+                services.Decorate(
                 typeof(IRequestHandler<,>),
                 typeof(LoggingRequestHandler<,>));
+            }           
 
             return services;
         }
 
         public static IServiceCollection DecorateRequestWithValidation(this IServiceCollection services)
         {
-            services.Decorate(
+            if (services.HasRegisteredRequestHandlers())
+            {
+                services.Decorate(
                 typeof(IRequestHandler<,>),
                 typeof(ValidationRequestHandler<,>));
+            }
 
             return services;
         }
 
         public static IServiceCollection DecorateRequestWithEventHandling(this IServiceCollection services)
         {
-            services.Decorate(
+            if (services.HasRegisteredRequestHandlers())
+            {
+                services.Decorate(
                 typeof(IRequestHandler<,>),
                 typeof(DomainEventsRequestHandler<,>));
-            services.Decorate(
-                typeof(IRequestHandler<,>),
-                typeof(IntegrationEventsRequestHandler<,>));
+                services.Decorate(
+                    typeof(IRequestHandler<,>),
+                    typeof(IntegrationEventsRequestHandler<,>));
+            }
 
             return services;
+        }
+
+        private static bool HasRegisteredRequestHandlers(this IServiceCollection services)
+        {
+            return services.Any(s =>
+                s.ServiceType.IsGenericType &&
+                s.ServiceType.GetGenericTypeDefinition() == typeof(IRequestHandler<,>));
         }
     }
 }
