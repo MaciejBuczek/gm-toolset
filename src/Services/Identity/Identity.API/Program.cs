@@ -9,6 +9,7 @@ builder.Services.AddHandlers();
 builder.Services.AddCarter();
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+builder.Services.AddMessaging(builder.Configuration);
 
 var app = builder.Build();
 

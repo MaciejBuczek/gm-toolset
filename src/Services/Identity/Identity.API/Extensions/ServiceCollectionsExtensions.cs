@@ -42,7 +42,7 @@ namespace Identity.API.Extensions
             services.AddValidatorsFromAssembly(
                 typeof(Program).Assembly,
                 includeInternalTypes: true);
-
+           
             services.Decorate(
                 typeof(IRequestHandler<,>),
                 typeof(DomainEventsRequestHandler<,>));

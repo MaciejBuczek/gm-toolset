@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Common.Messaging.Events.Sources;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Common.Messaging.Events.Services
 {
-    public class DomainEventDispatcher(IServiceProvider ServiceProvider) : IEventDispatcher<DomainEvent>
+    public class DomainEventDispatcher(IServiceProvider ServiceProvider, IIntegrationEventsCollector IntegrationEventsCollector) : IEventDispatcher<DomainEvent>
     {
         public async Task DispatchEventsAsync(IEnumerable<DomainEvent> events, CancellationToken cancellationToken = default)
         {
@@ -27,7 +28,11 @@ namespace Common.Messaging.Events.Services
                     {
                         if (projection != null)
                         {
-                            ((dynamic)projection).Project((dynamic)domainEvent);
+                            var integrationEvents = (IEnumerable<IntegrationEvent>)((dynamic)projection).Project((dynamic)domainEvent);
+                            if (integrationEvents != null)
+                            {
+                                IntegrationEventsCollector.AddEvents(integrationEvents);
+                            }
                         }
                     }
                 }
