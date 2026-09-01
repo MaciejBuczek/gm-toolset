@@ -1,6 +1,4 @@
-﻿using Common.Messaging;
-
-namespace Identity.API.Extensions
+﻿namespace Identity.API.Extensions
 {
     public static class ServiceCollectionsExtensions
     {

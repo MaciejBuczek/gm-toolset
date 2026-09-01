@@ -10,15 +10,17 @@ namespace Common.Messaging
 {
     public static class MessagingExtensions
     {
-        public static void AddMessaging(this IServiceCollection services, ConfigurationManager configurationManager)
+        public static IServiceCollection AddMessaging(this IServiceCollection services, ConfigurationManager configurationManager)
         {
             var configOptions = configurationManager.GetSection(nameof(Messaging)).Get<Messeging>() ??
                 throw new ApplicationException( "Messaging configuration section is missing");
 
             services.AddEasyNetQ(configOptions.ConnectionString).UseSystemTextJson();
+
+            return services;
         }
 
-        public static void AddMessagingHandlers(this IServiceCollection services)
+        public static IServiceCollection AddMessagingHandlers(this IServiceCollection services)
         {
             services.Scan(s => s.FromEntryAssembly()
                 .AddClasses(c => c.AssignableTo(typeof(IEventHandler<>)))
@@ -31,6 +33,8 @@ namespace Common.Messaging
             services.AddScoped<IIntegrationEventsCollector, IntegrationEventsCollector>();
             services.AddScoped<IEventDispatcher<DomainEvent>, DomainEventDispatcher>();
             services.AddScoped<IEventDispatcher<IntegrationEvent>, IntegrationEventDispatcher>();
+
+            return services;
         }
     }
 }
