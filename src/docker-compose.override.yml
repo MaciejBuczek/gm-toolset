@@ -70,7 +70,7 @@ services:
             - Jwt__SecretKey=supersecretkeyyoushouldnotcommit
             - Jwt__ExpirationInMinutes= 10
             - Jwt__RefreshTokenExpirationInDays=7
-            - Messeging__ConnectionString=host=rabbitmq;username=admin;password=admin;
+            - Messaging__ConnectionString=host=rabbitmq;username=admin;password=admin
         ports:
             - 5000:8080
             - 5050:8081

@@ -28,6 +28,7 @@ namespace Common.Messaging
 
             services.AddScoped<IEventPublisher, EasyNetQPublisher>();
             services.AddScoped<IDomainEventCollector, DomainEventCollector>();
+            services.AddScoped<IIntegrationEventsCollector, IntegrationEventsCollector>();
             services.AddScoped<IEventDispatcher<DomainEvent>, DomainEventDispatcher>();
             services.AddScoped<IEventDispatcher<IntegrationEvent>, IntegrationEventDispatcher>();
         }
