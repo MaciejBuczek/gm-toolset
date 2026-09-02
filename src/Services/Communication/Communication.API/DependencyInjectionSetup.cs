@@ -1,6 +1,6 @@
 ﻿namespace Communication.API
 {
-    public static class DependencyInjectionSetup
+    internal static class DependencyInjectionSetup
     {
         internal static IServiceCollection SetUpDI(this IServiceCollection services, ConfigurationManager configurationManager, bool isDevelopment)
         {

@@ -2,14 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.SetupIdentity(builder.Configuration.GetConnectionString(Constants.ConnectionStringName) ?? string.Empty);
-builder.Services.SetupDI();
-builder.Services.SetupOptions(builder.Configuration);
-builder.Services.AddHandlers();
-builder.Services.AddCarter();
-builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
-builder.Services.AddExceptionHandler<CustomExceptionHandler>();
-builder.Services.AddMessaging(builder.Configuration);
+builder.Services.SetUpDI(builder.Configuration);
 
 var app = builder.Build();
 
