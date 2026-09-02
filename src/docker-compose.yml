@@ -4,6 +4,11 @@ services:
         build:
           context: .
           dockerfile: Gateway/Gateway.API/Dockerfile
+    communication.api:
+        image: ${DOCKER_REGISTRY-}communicationapi
+        build:
+            context: .
+            dockerfile: Services/Communication/Communication.API/Dockerfile
     character.db:
         image: postgres
     character.api:
