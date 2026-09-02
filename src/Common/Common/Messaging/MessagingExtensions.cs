@@ -12,7 +12,7 @@ namespace Common.Messaging
     {
         public static IServiceCollection AddMessaging(this IServiceCollection services, ConfigurationManager configurationManager)
         {
-            var configOptions = configurationManager.GetSection(nameof(Messaging)).Get<Messeging>() ??
+            var configOptions = configurationManager.GetSection(nameof(Messeging)).Get<Messeging>() ??
                 throw new ApplicationException( "Messaging configuration section is missing");
 
             services.AddEasyNetQ(configOptions.ConnectionString).UseSystemTextJson();

@@ -2,12 +2,14 @@
 using Common.Exceptions.Handler;
 using Common.Mediator;
 using Common.Messaging;
+using Communication.API.Services;
+using EasyNetQ.AutoSubscribe;
 
 namespace Communication.API
 {
     public static class DependencyInjectionSetup
     {
-        public static IServiceCollection SetUpDI(this IServiceCollection services, ConfigurationManager configurationManager)
+        internal static IServiceCollection SetUpDI(this IServiceCollection services, ConfigurationManager configurationManager)
         {
             var assembly = typeof(DependencyInjectionSetup).Assembly;
 
@@ -22,6 +24,15 @@ namespace Communication.API
                 .DecorateRequestWithValidation()
                 .DecorateRequestWithLogging()
                 .AddCarter();
+
+            services.Scan(scan => scan
+                .FromAssemblies(assembly)
+                .AddClasses(classes => classes.AssignableTo(typeof(IConsumeAsync<>)), publicOnly: false)
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
+
+            services.AddHostedService<AutoSubscriberHostedService>();
 
             return services;
         }

@@ -25,7 +25,7 @@ services:
             - JwtAuthenticationOptions__Issuer=identity.api
             - JwtAuthenticationOptions__Audience=gm-toolset
             - JwtAuthenticationOptions__Key=supersecretkeyyoushouldnotcommit
-            - Messeging__ConnectionString=host=rabbitmq;username=admin;password=admin;
+            - Messeging__ConnectionString=host=rabbitmq;username=admin;password=admin
         ports:
             - 5003:8080
             - 5053:8081
@@ -55,7 +55,7 @@ services:
             - JwtAuthenticationOptions__Issuer=identity.api
             - JwtAuthenticationOptions__Audience=gm-toolset
             - JwtAuthenticationOptions__Key=supersecretkeyyoushouldnotcommit
-            - Messeging__ConnectionString=host=rabbitmq;username=admin;password=admin;
+            - Messeging__ConnectionString=host=rabbitmq;username=admin;password=admin
         ports:
             - 5002:8080
             - 5052:8081
@@ -87,7 +87,7 @@ services:
             - Jwt__SecretKey=supersecretkeyyoushouldnotcommit
             - Jwt__ExpirationInMinutes= 10
             - Jwt__RefreshTokenExpirationInDays=7
-            - Messaging__ConnectionString=host=rabbitmq;username=admin;password=admin
+            - Messeging__ConnectionString=host=rabbitmq;username=admin;password=admin
         ports:
             - 5000:8080
             - 5050:8081
