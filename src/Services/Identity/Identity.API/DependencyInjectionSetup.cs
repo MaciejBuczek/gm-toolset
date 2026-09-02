@@ -32,7 +32,7 @@
             return services;
         }
 
-        public static IServiceCollection SetupIdentityContext(this IServiceCollection services, ConfigurationManager configurationManager)
+        private static IServiceCollection SetupIdentityContext(this IServiceCollection services, ConfigurationManager configurationManager)
         {
             var dbOptions = configurationManager.GetSection(nameof(ConnectionStrings)).Get<ConnectionStrings>();
             var connectionString = dbOptions?.Database?? string.Empty;
