@@ -2,7 +2,7 @@
 {
     public static class DependencyInjectionSetup
     {
-        internal static IServiceCollection SetUpDI(this IServiceCollection services, ConfigurationManager configurationManager)
+        internal static IServiceCollection SetUpDI(this IServiceCollection services, ConfigurationManager configurationManager, bool isDevelopment)
         {
             var assembly = typeof(DependencyInjectionSetup).Assembly;
 
@@ -18,7 +18,7 @@
                 .DecorateRequestWithLogging()
                 .AddCarter()
                 .AddLocalConsumers(assembly)
-                .AddServices(configurationManager)
+                .AddServices(configurationManager, isDevelopment)
                 .AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
 
@@ -35,11 +35,19 @@
                 .WithScopedLifetime());
         }
 
-        private static IServiceCollection AddServices(this IServiceCollection services, ConfigurationManager configurationManager)
+        private static IServiceCollection AddServices(this IServiceCollection services, ConfigurationManager configurationManager, bool isDevelopment)
         {
             services.AddHostedService<AutoSubscriberHostedService>();
             services.AddScoped<IEmailTemplateRenderer, RazorRenderer>();
-            services.AddScoped<IEmailSender, CommunicationServiceEmailSender>();    
+
+            if(isDevelopment)
+            {
+                services.AddScoped<IEmailSender, MockedEmailSender>();
+            }
+            else
+            {
+                services.AddScoped<IEmailSender, CommunicationServiceEmailSender>();
+            }
 
             services.Configure<AzureCommunicationService>(configurationManager.GetSection(nameof(AzureCommunicationService)));
             services.AddSingleton(acs =>

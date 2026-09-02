@@ -1,6 +1,6 @@
 ﻿using EasyNetQ.Consumer;
 
-namespace Common.Messaging.Retry
+namespace Common.Messaging.Retry.Contracts
 {
     public interface IMessageRetryPublisher
     {

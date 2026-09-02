@@ -2,6 +2,7 @@
 using Common.Messaging.Exceptions;
 using EasyNetQ;
 using Microsoft.Extensions.Logging;
+using Common.Messaging.Retry.Contracts;
 
 namespace Common.Messaging.Retry
 {

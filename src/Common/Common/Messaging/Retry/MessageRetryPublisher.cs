@@ -1,4 +1,5 @@
-﻿using EasyNetQ;
+﻿using Common.Messaging.Retry.Contracts;
+using EasyNetQ;
 using EasyNetQ.Consumer;
 
 namespace Common.Messaging.Retry

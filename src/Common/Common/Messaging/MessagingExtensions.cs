@@ -3,6 +3,7 @@ using Common.Messaging.Events.Services;
 using Common.Messaging.Events.Sources;
 using Common.Messaging.Options;
 using Common.Messaging.Retry;
+using Common.Messaging.Retry.Contracts;
 using EasyNetQ;
 using EasyNetQ.Consumer;
 using Microsoft.Extensions.Configuration;

@@ -26,6 +26,8 @@ services:
             - JwtAuthenticationOptions__Audience=gm-toolset
             - JwtAuthenticationOptions__Key=supersecretkeyyoushouldnotcommit
             - Messeging__ConnectionString=host=rabbitmq;username=admin;password=admin
+            - AzureCommunicationService__ConnectionString=
+            - AzureCommunicationService__SenderAddress=
         ports:
             - 5003:8080
             - 5053:8081
