@@ -26,9 +26,9 @@ namespace Common.Messaging.Retry
                     configuration.AsDurable(true);
                     configuration.AsExclusive(false);
                     configuration.AsAutoDelete(false);
-                    configuration.WithArgument(RetryConstants.RetryTTLHeaderName, (long)delay.TotalMilliseconds);
-                    configuration.WithArgument(RetryConstants.RetryDeadLetterExchangeHeaderName, context.ReceivedInfo.Exchange);
-                    configuration.WithArgument(RetryConstants.RetryDeadLetterRoutingKeyHeaderName, context.ReceivedInfo.RoutingKey);
+                    configuration.WithArgument(RetryConstants.RetryTTLArgumentName, (long)delay.TotalMilliseconds);
+                    configuration.WithArgument(RetryConstants.RetryDeadLetterExchangeArgumentName, context.ReceivedInfo.Exchange);
+                    configuration.WithArgument(RetryConstants.RetryDeadLetterRoutingKeyArgumentName, context.ReceivedInfo.RoutingKey);
                 }, cancellationToken);
 
             await AdvancedBus.QueueBindAsync( retryQueueName, RetryConstants.RetryExchangeName, retryQueueName,
