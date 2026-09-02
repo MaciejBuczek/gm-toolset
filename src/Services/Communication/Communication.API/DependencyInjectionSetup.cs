@@ -1,11 +1,4 @@
-﻿using Carter;
-using Common.Exceptions.Handler;
-using Common.Mediator;
-using Common.Messaging;
-using Communication.API.Services;
-using EasyNetQ.AutoSubscribe;
-
-namespace Communication.API
+﻿namespace Communication.API
 {
     public static class DependencyInjectionSetup
     {
@@ -23,17 +16,40 @@ namespace Communication.API
                 .DecorateRequestWithEventHandling()
                 .DecorateRequestWithValidation()
                 .DecorateRequestWithLogging()
-                .AddCarter();
+                .AddCarter()
+                .AddLocalConsumers(assembly)
+                .AddServices(configurationManager)
+                .AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
 
-            services.Scan(scan => scan
+            return services;
+        }
+
+        private static IServiceCollection AddLocalConsumers(this IServiceCollection services, Assembly assembly)
+        {
+            return services.Scan(scan => scan
                 .FromAssemblies(assembly)
                 .AddClasses(classes => classes.AssignableTo(typeof(IConsumeAsync<>)), publicOnly: false)
                 .AsSelf()
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
+        }
 
+        private static IServiceCollection AddServices(this IServiceCollection services, ConfigurationManager configurationManager)
+        {
             services.AddHostedService<AutoSubscriberHostedService>();
+            services.AddScoped<IEmailTemplateRenderer, RazorRenderer>();
+            services.AddScoped<IEmailSender, CommunicationServiceEmailSender>();    
 
+            services.Configure<AzureCommunicationService>(configurationManager.GetSection(nameof(AzureCommunicationService)));
+            services.AddSingleton(acs =>
+            {
+                var options = acs
+                    .GetRequiredService<IOptions<AzureCommunicationService>>()
+                    .Value;
+
+                return new EmailClient(options.ConnectionString);
+            });
             return services;
         }
     }

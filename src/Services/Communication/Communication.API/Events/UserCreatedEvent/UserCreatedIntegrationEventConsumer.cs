@@ -1,14 +1,13 @@
-﻿using Common.Messaging.Events.Contracts.Identity;
-using EasyNetQ.AutoSubscribe;
-
-namespace Communication.API.Events.UserCreatedEvent
+﻿namespace Communication.API.Events.UserCreatedEvent
 {
-    public class UserCreatedIntegrationEventConsumer : IConsumeAsync<UserCreatedIntegrationEvent>
+    public class UserCreatedIntegrationEventConsumer(IEmailSender EmailSender, IEmailTemplateRenderer EmailTemplateRenderer) : IConsumeAsync<UserCreatedIntegrationEvent>
     {
-        public Task ConsumeAsync(UserCreatedIntegrationEvent message, CancellationToken cancellationToken = default)
+        public async Task ConsumeAsync(UserCreatedIntegrationEvent message, CancellationToken cancellationToken = default)
         {
-            Console.WriteLine($"UserCreatedIntegrationEvent received: UserId={message.Id}, Email={message.Email}");
-            return Task.CompletedTask;
+            var model = new WelcomeEmailModel(Username: message.Username);
+            var content = await EmailTemplateRenderer.RenderTemplateAsync("WelcomeEmail.cshtml", model, cancellationToken);
+
+            await EmailSender.SendEmailAsync(message.Email, "Welcome to GM-Toolest!", content, cancellationToken);
         }
     }
 }

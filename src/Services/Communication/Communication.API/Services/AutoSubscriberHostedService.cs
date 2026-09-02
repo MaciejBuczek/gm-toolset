@@ -1,8 +1,4 @@
-﻿using EasyNetQ;
-using EasyNetQ.AutoSubscribe;
-using System.Reflection;
-
-namespace Communication.API.Services
+﻿namespace Communication.API.Services
 {
     public class AutoSubscriberHostedService(IServiceProvider ServiceProvider, IBus Bus) : IHostedService
     {
