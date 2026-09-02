@@ -2,7 +2,9 @@
 using Common.Messaging.Events.Services;
 using Common.Messaging.Events.Sources;
 using Common.Messaging.Options;
+using Common.Messaging.Retry;
 using EasyNetQ;
+using EasyNetQ.Consumer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +18,8 @@ namespace Common.Messaging
                 throw new ApplicationException( "Messaging configuration section is missing");
 
             services.AddEasyNetQ(configOptions.ConnectionString).UseSystemTextJson();
+            services.AddSingleton<IMessageRetryPublisher, MessageRetryPublisher>();
+            services.AddSingleton<IConsumeErrorStrategy, ErrorStrategyProvider>();
 
             return services;
         }

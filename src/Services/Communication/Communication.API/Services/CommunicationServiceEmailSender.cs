@@ -11,6 +11,8 @@
             var recipients = new EmailRecipients([new EmailAddress(mailTo)]);
             var message = new EmailMessage(ConfigurationOptions.Value.SenderAddress, recipients, content);
 
+            Console.WriteLine(message);
+
             try
             {
                 await EmailClient.SendAsync(WaitUntil.Completed, message, cancellationToken);
