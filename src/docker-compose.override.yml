@@ -7,8 +7,8 @@ services:
            - ReverseProxy__Clusters__character-service__Destinations__destination1__Address=http://character.api:8080/
            - ReverseProxy__Clusters__identity-service__Destinations__destination1__Address=http://identity.api:8080/
         ports:
-           - 5001:8080
-           - 5051:8081
+           - 5000:8080
+           - 5050:8081
         volumes:
            - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
@@ -29,44 +29,13 @@ services:
             - AzureCommunicationService__ConnectionString=
             - AzureCommunicationService__SenderAddress=
         ports:
-            - 5003:8080
-            - 5053:8081
+            - 5001:8080
+            - 5051:8081
         volumes:
             - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
             - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
         depends_on:
             - rabbitmq 
-    character.db:
-        container_name: character.db
-        environment:
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
-            - POSTGRES_DB=CharacterDB
-        ports:
-            - 6001:5432
-        restart: always
-        volumes:
-            - character-postgres:/var/lib/postgresql/data/
-    character.api:
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Development
-            - ASPNETCORE_HTTP_PORTS=8080
-            - ASPNETCORE_HTTPS_PORTS=8081
-            - Database__ConnectionString=Server=character.db;Port=5432;Database=CharacterDB;User Id=postgres;Password=postgres;Include Error Detail=true
-            - Database__Schema=character
-            - JwtAuthenticationOptions__Issuer=identity.api
-            - JwtAuthenticationOptions__Audience=gm-toolset
-            - JwtAuthenticationOptions__Key=supersecretkeyyoushouldnotcommit
-            - Messeging__ConnectionString=host=rabbitmq;username=admin;password=admin
-        ports:
-            - 5002:8080
-            - 5052:8081
-        volumes:
-            - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-            - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-        depends_on:
-            - character.db
-            - rabbitmq
     identity.db:
         container_name: identity.db
         environment:
@@ -74,7 +43,7 @@ services:
             - POSTGRES_PASSWORD=postgres
             - POSTGRES_DB=IdentityDB
         ports:
-            - 6000:5432
+            - 6002:5432
         restart: always
         volumes:
             - identity-postgres:/var/lib/postgresql/data/
@@ -91,13 +60,44 @@ services:
             - Jwt__RefreshTokenExpirationInDays=7
             - Messeging__ConnectionString=host=rabbitmq;username=admin;password=admin
         ports:
-            - 5000:8080
-            - 5050:8081
+            - 5002:8080
+            - 5052:8081
         volumes:
             - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
             - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro 
         depends_on:
             - identity.db
+            - rabbitmq
+    character.db:
+        container_name: character.db
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=CharacterDB
+        ports:
+            - 6003:5432
+        restart: always
+        volumes:
+            - character-postgres:/var/lib/postgresql/data/
+    character.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_HTTP_PORTS=8080
+            - ASPNETCORE_HTTPS_PORTS=8081
+            - Database__ConnectionString=Server=character.db;Port=5432;Database=CharacterDB;User Id=postgres;Password=postgres;Include Error Detail=true
+            - Database__Schema=character
+            - JwtAuthenticationOptions__Issuer=identity.api
+            - JwtAuthenticationOptions__Audience=gm-toolset
+            - JwtAuthenticationOptions__Key=supersecretkeyyoushouldnotcommit
+            - Messeging__ConnectionString=host=rabbitmq;username=admin;password=admin
+        ports:
+            - 5003:8080
+            - 5053:8081
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+        depends_on:
+            - character.db
             - rabbitmq
     rabbitmq:
         ports:
