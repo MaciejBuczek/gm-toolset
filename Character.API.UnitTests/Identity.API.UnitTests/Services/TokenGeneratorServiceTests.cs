@@ -1,4 +1,4 @@
-﻿namespace Identity.API.UnitTests.Features
+﻿namespace Identity.API.UnitTests.Services
 {
     public class TokenGeneratorServiceTests
     {
