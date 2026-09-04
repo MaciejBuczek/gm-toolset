@@ -6,3 +6,7 @@ global using Identity.API.Services.Contracts;
 global using Microsoft.AspNetCore.Identity;
 global using Moq;
 global using Microsoft.EntityFrameworkCore.Storage;
+global using Identity.API.ConfigurationOptions;
+global using Microsoft.Extensions.Options;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
