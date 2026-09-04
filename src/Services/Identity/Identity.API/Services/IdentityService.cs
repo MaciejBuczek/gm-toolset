@@ -1,6 +1,6 @@
 ﻿namespace Identity.API.Services
 {
-    public class IdentityService(UserManager<AppUser> UserManager, AppDbContext AbbDbContext, IDomainEventCollector DomainEventBuffor) : IIdentityService
+    public class IdentityService(UserManager<AppUser> UserManager, ITransactionHandler TransactionHandler, IDomainEventCollector DomainEventBuffor) : IIdentityService
     {
         public async Task CreateUser(AppUser user, string password, CancellationToken cancellationToken = default)
         {
@@ -9,7 +9,7 @@
                 throw new ArgumentNullException(nameof(user));
             }
 
-            using var transaction = await AbbDbContext.Database.BeginTransactionAsync(cancellationToken);         
+            using var transaction = await TransactionHandler.BeginTransactionAsync(cancellationToken);
 
             var identityResult = await UserManager.CreateAsync(user, password);
             if (!identityResult.Succeeded)
@@ -17,7 +17,11 @@
                 throw new BadRequestException(string.Join(Constants.ExceptionSeparator, identityResult.Errors.Select(e => e.Description)));
             }
 
-            await UserManager.AddToRoleAsync(user, Constants.Roles.User);
+            var roleResult = await UserManager.AddToRoleAsync(user, Constants.Roles.User);
+            if (!roleResult.Succeeded)
+            {
+                throw new BadRequestException(string.Join(Constants.ExceptionSeparator, roleResult.Errors.Select(e => e.Description)));
+            }
 
             await transaction.CommitAsync(cancellationToken);
 

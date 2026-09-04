@@ -28,6 +28,7 @@
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<ITransactionHandler, TransactionHandler>();
 
             return services;
         }
