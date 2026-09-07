@@ -1,6 +1,6 @@
 ﻿namespace Identity.API.Services
 {
-    public class IdentityService(UserManager<AppUser> UserManager, RoleManager<IdentityRole> RoleManager, ITransactionHandler TransactionHandler, IDomainEventCollector DomainEventBuffor) : IIdentityService
+    public class IdentityService(UserManager<AppUser> UserManager, RoleManager<IdentityRole<Guid>> RoleManager, ITransactionHandler TransactionHandler, IDomainEventCollector DomainEventBuffor) : IIdentityService
     {
         public async Task CreateUser(AppUser user, string password, CancellationToken cancellationToken = default)
         {

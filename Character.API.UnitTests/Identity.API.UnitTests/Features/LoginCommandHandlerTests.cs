@@ -5,7 +5,6 @@
         private readonly Mock<UserManager<AppUser>> _userManagerMock = SetupHelper.CreateUserManagerMock();
         private readonly Mock<IRefreshTokenRepository> _refreshTokenRepositoryMock = new ();
         private readonly Mock<ITokenGeneratorService> _tokenGeneratorServiceMock = new();
-        private readonly Mock<IIdentityService> _identityService = new();
         private readonly LoginCommand _loginCommand = new(
             Username: "testuser",
             Email: "testuser@example.com",

@@ -9,5 +9,7 @@ global using Microsoft.EntityFrameworkCore.Storage;
 global using Identity.API.ConfigurationOptions;
 global using Microsoft.Extensions.Options;
 global using System.IdentityModel.Tokens.Jwt;
-global using System.Security.Claims;
 global using Identity.API.Features.Login;
+global using Identity.API.Features.LoginUsingRefreshToken;
+global using Identity.API.Exceptions;
+global using Microsoft.EntityFrameworkCore;
