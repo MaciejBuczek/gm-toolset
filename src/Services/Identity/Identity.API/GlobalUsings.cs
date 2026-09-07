@@ -34,3 +34,4 @@ global using Common.Messaging.Events.Services;
 global using Common.Messaging;
 global using Identity.API;
 global using Microsoft.EntityFrameworkCore.Storage;
+global using Identity.API.Exceptions;

@@ -17,5 +17,18 @@
                 null!,
                 null!);
         }
+
+        internal static Mock<RoleManager<IdentityRole>> CreateRoleManagerMock()
+        {
+            var store = new Mock<IRoleStore<IdentityRole>>();
+
+            return new Mock<RoleManager<IdentityRole>>(
+                store.Object,
+                null,
+                null,
+                null,
+                null);
+        }
     }
+
 }

@@ -10,3 +10,4 @@ global using Identity.API.ConfigurationOptions;
 global using Microsoft.Extensions.Options;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
+global using Identity.API.Features.Login;

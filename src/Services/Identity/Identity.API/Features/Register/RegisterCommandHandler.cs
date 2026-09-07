@@ -1,9 +1,9 @@
 ﻿namespace Identity.API.Features.Register
 {
-    internal record RegisterCommandResult(bool Succeded);
-    internal record RegisterCommand(string Username, string Email, string Password) : ICommand<RegisterCommandResult>;
+    public record RegisterCommandResult(bool Succeded);
+    public record RegisterCommand(string Username, string Email, string Password) : ICommand<RegisterCommandResult>;
 
-    internal class RegisterCommandHandler(IIdentityService IdentityService) : ICommandHandler<RegisterCommand, RegisterCommandResult>
+    public class RegisterCommandHandler(IIdentityService IdentityService) : ICommandHandler<RegisterCommand, RegisterCommandResult>
     {
         public async Task<RegisterCommandResult> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
