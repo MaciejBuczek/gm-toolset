@@ -1,0 +1,15 @@
+﻿global using Common.Exceptions;
+global using Common.Messaging.Events.Sources;
+global using Identity.API.Data;
+global using Identity.API.Services;
+global using Identity.API.Services.Contracts;
+global using Microsoft.AspNetCore.Identity;
+global using Moq;
+global using Microsoft.EntityFrameworkCore.Storage;
+global using Identity.API.ConfigurationOptions;
+global using Microsoft.Extensions.Options;
+global using System.IdentityModel.Tokens.Jwt;
+global using Identity.API.Features.Login;
+global using Identity.API.Features.LoginUsingRefreshToken;
+global using Identity.API.Exceptions;
+global using Microsoft.EntityFrameworkCore;

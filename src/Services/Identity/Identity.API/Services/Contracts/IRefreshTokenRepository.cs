@@ -1,6 +1,6 @@
 ﻿namespace Identity.API.Services.Contracts
 {
-    internal interface IRefreshTokenRepository
+    public interface IRefreshTokenRepository
     {
         Task SaveRefreshTokenToDbAsync(AppUser user, string refreshToken, CancellationToken cancellationToken = default);
         Task<RefreshToken?> FindRefreshTokenAsync(string token, CancellationToken cancellationToken = default);
