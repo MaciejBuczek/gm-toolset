@@ -1,6 +1,4 @@
-﻿using Identity.API.Exceptions;
-
-namespace Identity.API.UnitTests.Services
+﻿namespace Identity.API.UnitTests.Services
 {
     public class IdentityServiceTests
     {

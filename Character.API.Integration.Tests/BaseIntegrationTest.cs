@@ -1,9 +1,18 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Character.API.Data;
 
 namespace Character.API.Integration.Tests
 {
-    public class BaseIntegrationTest(IntegrationTestsWebAppFactory Factory) : IClassFixture<IntegrationTestsWebAppFactory>
+    public abstract class BaseIntegrationTest<T> : IClassFixture<IntegrationTestsWebAppFactory> where T: notnull
     {
-        public readonly IServiceScope Scope = Factory.Services.CreateScope();
+        private readonly IServiceScope _scope;
+        internal readonly T handler;
+        internal ICharacterRepository repository;
+
+        protected BaseIntegrationTest(IntegrationTestsWebAppFactory factory)
+        {
+            _scope = factory.Services.CreateScope();
+            handler = _scope.ServiceProvider.GetRequiredService<T>();
+            repository = _scope.ServiceProvider.GetRequiredService<ICharacterRepository>();
+        }
     }
 }
