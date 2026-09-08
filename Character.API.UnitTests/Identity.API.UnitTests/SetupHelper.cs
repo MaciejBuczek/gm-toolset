@@ -18,11 +18,11 @@
                 null!);
         }
 
-        internal static Mock<RoleManager<IdentityRole>> CreateRoleManagerMock()
+        internal static Mock<RoleManager<IdentityRole<Guid>>> CreateRoleManagerMock()
         {
-            var store = new Mock<IRoleStore<IdentityRole>>();
+            var store = new Mock<IRoleStore<IdentityRole<Guid>>>();
 
-            return new Mock<RoleManager<IdentityRole>>(
+            return new Mock<RoleManager<IdentityRole<Guid>>>(
                 store.Object,
                 null,
                 null,
