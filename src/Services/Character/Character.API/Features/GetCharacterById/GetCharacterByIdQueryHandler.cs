@@ -1,9 +1,9 @@
 ﻿namespace Character.API.Features.GetCharacterById
 {
-    internal record GetCharacterByIdResult(Entities.Character Character);
-    internal record GetCharacterByIdQuery(Guid Id) : IQuery<GetCharacterByIdResult>;
+    public record GetCharacterByIdResult(Entities.Character Character);
+    public record GetCharacterByIdQuery(Guid Id) : IQuery<GetCharacterByIdResult>;
 
-    internal class GetCharacterByIdQueryHandler(ICharacterRepository repository) : IQueryHandler<GetCharacterByIdQuery, GetCharacterByIdResult>
+    public class GetCharacterByIdQueryHandler(ICharacterRepository repository) : IQueryHandler<GetCharacterByIdQuery, GetCharacterByIdResult>
     {
         public async Task<GetCharacterByIdResult> Handle(GetCharacterByIdQuery query, CancellationToken cancellationToken = default)
         {
