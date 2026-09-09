@@ -5,3 +5,5 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Character.API.Features.DeleteCharacterById;
 global using Character.API.Exceptions;
 global using CharacterEntity = Character.API.Entities.Character;
+global using Character.API.Features.GetCharactersBySchemaId;
+global using Character.API.Features.GetCharacterById;

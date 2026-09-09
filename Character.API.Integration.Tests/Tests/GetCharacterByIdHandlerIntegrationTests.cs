@@ -1,6 +1,4 @@
-﻿using Character.API.Features.GetCharacterById;
-
-namespace Character.API.Integration.Tests.Tests
+﻿namespace Character.API.Integration.Tests.Tests
 {
     public class GetCharacterByIdHandlerIntegrationTests(IntegrationTestsWebAppFactory Factory) :
         BaseIntegrationTest<IQueryHandler<GetCharacterByIdQuery, GetCharacterByIdResult>>(Factory)

@@ -1,8 +1,13 @@
-﻿using Common.Exceptions;
-
-namespace Character.API.Exceptions
+﻿namespace Character.API.Exceptions
 {
-    public class CharacterNotFoundException(Guid Id) : NotFoundException(nameof(Entities.Character), Id)
+    public class CharacterNotFoundException : NotFoundException
     {
+        public CharacterNotFoundException(Guid Id) : base(nameof(Entities.Character), Id)
+        {          
+        }
+
+        public CharacterNotFoundException(string message) : base(message)
+        {        
+        }
     }
 }
