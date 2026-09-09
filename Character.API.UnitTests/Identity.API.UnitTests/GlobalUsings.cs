@@ -13,3 +13,4 @@ global using Identity.API.Features.Login;
 global using Identity.API.Features.LoginUsingRefreshToken;
 global using Identity.API.Exceptions;
 global using Microsoft.EntityFrameworkCore;
+global using Identity.API.Features.Register;

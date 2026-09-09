@@ -12,6 +12,11 @@
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.UseSetting("ConnectionStrings:Database", _dbContainer.GetConnectionString());
+            builder.UseSetting("Jwt:Issuer", "identity.api");
+            builder.UseSetting("Jwt:Audience", "gm-toolset");
+            builder.UseSetting("Jwt:SecretKey", "supersecretkeyyoushouldnotcommit");
+            builder.UseSetting("Jwt:ExpirationInMinutes", "10");
+            builder.UseSetting("Jwt:RefreshTokenExpirationInDays", "7");
         }
 
         public Task InitializeAsync()

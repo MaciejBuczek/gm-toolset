@@ -1,9 +1,9 @@
 ﻿namespace Identity.API.Features.Login
 {
     public record LoginCommandResult(string Token, string RefreshToken);
-    public record LoginCommand(string Username, string Email, string Password) : IQuery<LoginCommandResult>;
+    public record LoginCommand(string Username, string Email, string Password) : ICommand<LoginCommandResult>;
     public class LoginCommandHandler(UserManager<AppUser> UserManager, IRefreshTokenRepository RefreshTokenRepository, ITokenGeneratorService TokenGeneratorService)
-        : IQueryHandler<LoginCommand, LoginCommandResult>
+        : ICommandHandler<LoginCommand, LoginCommandResult>
     {
         public async Task<LoginCommandResult> Handle(LoginCommand request, CancellationToken cancellationToken = default)
         {

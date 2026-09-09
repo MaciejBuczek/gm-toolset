@@ -6,3 +6,6 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Common.CQRS;
 global using Identity.API.Features.Register;
 global using Identity.API.Exceptions;
+global using Identity.API.Features.Login;
+global using Common.Exceptions;
+global using Microsoft.AspNetCore.Identity;
