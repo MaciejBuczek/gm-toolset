@@ -1,6 +1,4 @@
-﻿using Character.API.Data;
-
-namespace Character.API.Integration.Tests
+﻿namespace Character.API.Integration.Tests
 {
     public abstract class BaseIntegrationTest<T> : IClassFixture<IntegrationTestsWebAppFactory> where T: notnull
     {

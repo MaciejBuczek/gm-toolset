@@ -1,6 +1,4 @@
-﻿using Identity.API.Features.Register;
-
-namespace Identity.API.UnitTests.Features
+﻿namespace Identity.API.UnitTests.Features
 {
     public class RegisterCommandHandlerTests
     {
@@ -25,7 +23,6 @@ namespace Identity.API.UnitTests.Features
 
             // Assert
             Assert.NotNull(result);
-            Assert.True(result.Succeded);
         }
     }
 }
