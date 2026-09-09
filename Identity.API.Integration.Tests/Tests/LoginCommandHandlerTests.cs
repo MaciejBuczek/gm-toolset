@@ -4,13 +4,18 @@
         BaseIntegrationTest<ICommandHandler<LoginCommand, LoginCommandResult>>(Factory)
     {
         private static readonly string _password = "Password123!";
-        private static readonly AppUser _user = new()
+        private static readonly string _userName = "TestUser";
+        private static readonly string _email = "testemail@gmail.com";
+        private static AppUser GetUser()
         {
-            UserName = "TestUser",
-            Email = "testemail@gmail.com",
-        };
+            return new AppUser
+            {
+                UserName = _userName,
+                Email = _email
+            };
+        }
 
-        private readonly LoginCommand _loginCommand = new(Username: _user.UserName, Email: _user.Email, Password: _password);
+        private readonly LoginCommand _loginCommand = new(Username: _userName, Email: _email, Password: _password);
 
         [Fact]
         public async Task Handle_ShouldReturnUnauthorizedExceptionWhenUserIsNotFound()
@@ -23,8 +28,9 @@
         public async Task Handle_ShouldReturnUnauthorizedExceptionWhenPasswordIsIncorrect()
         {
             //Arrange
+            var user = GetUser();
             var command = new LoginCommand(Username: _loginCommand.Username, Email: _loginCommand.Email, Password: "ThisIsAnIncorrectPassword1!");
-            await userManager.CreateAsync(_user, _password);
+            await userManager.CreateAsync(user, _password);
 
             //Act
             await Assert.ThrowsAsync<UnauthorizedException>(async () => await handler.Handle(command));
@@ -34,7 +40,8 @@
         public async Task Handle_ShouldReturnLoginCommandResult()
         {
             //Arrange
-            await userManager.CreateAsync(_user, _password);
+            var user = GetUser();
+            await userManager.CreateAsync(user, _password);
 
             //Act
             var result = await handler.Handle(_loginCommand);

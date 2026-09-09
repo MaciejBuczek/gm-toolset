@@ -3,57 +3,75 @@
     public class LoginUsingRefreshTokenHandlerTests(IntegrationTestsWebAppFactory Factory) :
         BaseIntegrationTest<ICommandHandler<LoginUsingRefreshTokenCommand, LoginUsingRefreshTokenCommandResult>>(Factory)
     {
-        private readonly LoginUsingRefreshTokenCommand _command = new(RefreshToken: "1xzo9qNA7rC3xRT0GI+6WdQsulUjOBTNbifxx92Vvwg=");
-        private static readonly AppUser _user = new()
+        private static string GetRefreshToken()
         {
-            UserName = "TestUser",
-            Email = "testemail@gmail.com",
-        };
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+        }
+
+        private static AppUser GetUser()
+        {
+            var id = Guid.NewGuid();
+            return new AppUser
+            {
+                UserName = $"TestUser{id}",
+                Email = $"testemail@gmail.com{id}",
+            };
+        }
 
         [Fact]
         public async Task Handle_ShouldThrowUnauthorizedExceptionIfTokenIsNotFoundInDatabase()
         {
-            //Arrange Act Assert
-            await Assert.ThrowsAsync<UnauthorizedException>(async () => await handler.Handle(_command));
+            //Arrange
+            var command = new LoginUsingRefreshTokenCommand(GetRefreshToken());
+
+            //Act, Assert
+            await Assert.ThrowsAsync<UnauthorizedException>(async () => await handler.Handle(command));
         }
 
         [Fact]
         public async Task Handle_ShouldThrowUnauthorizedExceptionIfRefreshTokenUserIsNotFound()
         {
             //Arrange
-            await userManager.CreateAsync(_user);
-            await refreshTokenRepository.SaveRefreshTokenToDbAsync(_user, _command.RefreshToken);
-            await userManager.DeleteAsync(_user);
+            var command = new LoginUsingRefreshTokenCommand(GetRefreshToken());
+            var user = GetUser();
+            await userManager.CreateAsync(user);
+            await refreshTokenRepository.SaveRefreshTokenToDbAsync(user, command.RefreshToken);
+            await userManager.DeleteAsync(user);
 
             //Act
-            await Assert.ThrowsAsync<UnauthorizedException>(async () => await handler.Handle(_command));
+            await Assert.ThrowsAsync<UnauthorizedException>(async () => await handler.Handle(command));
         }
 
         [Fact]
         public async Task Handle_ShouldThrowIdentityRoleNotFoundExceptionIfRefreshTokenUserHasNoRoles()
         {
+
             //Arrange
-            await userManager.CreateAsync(_user);
-            await refreshTokenRepository.SaveRefreshTokenToDbAsync(_user, _command.RefreshToken);
+            var command = new LoginUsingRefreshTokenCommand(GetRefreshToken());
+            var user = GetUser();
+            await userManager.CreateAsync(user);
+            await refreshTokenRepository.SaveRefreshTokenToDbAsync(user, command.RefreshToken);
 
             //Act
-            await Assert.ThrowsAsync<IdentityRoleNotFoundException>(async () => await handler.Handle(_command));
+            await Assert.ThrowsAsync<IdentityRoleNotFoundException>(async () => await handler.Handle(command));
         }
 
         [Fact]
         public async Task Handle_ShouldReturnLoginUsingRefreshTokenResult()
         {
             //Arrange
-            await userManager.CreateAsync(_user);
-            await refreshTokenRepository.SaveRefreshTokenToDbAsync(_user, _command.RefreshToken);
-            await userManager.AddToRoleAsync(_user, "user");
+            var command = new LoginUsingRefreshTokenCommand(GetRefreshToken());
+            var user = GetUser();
+            await userManager.CreateAsync(user);
+            await refreshTokenRepository.SaveRefreshTokenToDbAsync(user, command.RefreshToken);
+            await userManager.AddToRoleAsync(user, "user");
 
             //Act
-            await handler.Handle(_command);
+            await handler.Handle(command);
 
             //Assert
-            Assert.NotNull(_command);
-            Assert.False(string.IsNullOrEmpty(_command.RefreshToken));
+            Assert.NotNull(command);
+            Assert.False(string.IsNullOrEmpty(command.RefreshToken));
         }
     }
 }

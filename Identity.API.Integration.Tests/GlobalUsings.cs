@@ -10,3 +10,4 @@ global using Identity.API.Features.Login;
 global using Common.Exceptions;
 global using Microsoft.AspNetCore.Identity;
 global using Identity.API.Features.LoginUsingRefreshToken;
+global using System.Security.Cryptography;
