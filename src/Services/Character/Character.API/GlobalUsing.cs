@@ -13,7 +13,6 @@ global using Common.Exceptions;
 global using Common.Exceptions.Handler;
 global using Common.Identity;
 global using Common.Mediator;
-global using Common.Mediator.Pipelines;
 global using FluentValidation;
 global using Mapster;
 global using Marten;

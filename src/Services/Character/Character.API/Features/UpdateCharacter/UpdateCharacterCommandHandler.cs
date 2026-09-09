@@ -1,10 +1,10 @@
 ﻿namespace Character.API.Features.UpdateCharacter
 {
-    internal record UpdateCharaterResult(bool Success);
-    internal record UpdateCharacterCommand(Guid Id, Guid UserId, Guid SchemaId, string Name, string Description, ICollection<Statistic> Statistics)
+    public record UpdateCharaterResult(bool Success);
+    public record UpdateCharacterCommand(Guid Id, Guid UserId, Guid SchemaId, string Name, string Description, ICollection<Statistic> Statistics)
         : CharacterBaseRequest(UserId, SchemaId, Name, Description, Statistics), ICommand<UpdateCharaterResult>;
 
-    internal class UpdateCharacterCommandHandler(ICharacterRepository repository) : ICommandHandler<UpdateCharacterCommand, UpdateCharaterResult>
+    public class UpdateCharacterCommandHandler(ICharacterRepository repository) : ICommandHandler<UpdateCharacterCommand, UpdateCharaterResult>
     {
         public async Task<UpdateCharaterResult> Handle(UpdateCharacterCommand command, CancellationToken cancellationToken = default)
         {

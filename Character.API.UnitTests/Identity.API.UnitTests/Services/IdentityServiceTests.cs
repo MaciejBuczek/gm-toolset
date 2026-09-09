@@ -1,11 +1,9 @@
-﻿using Identity.API.Exceptions;
-
-namespace Identity.API.UnitTests.Services
+﻿namespace Identity.API.UnitTests.Services
 {
     public class IdentityServiceTests
     {
         private readonly Mock<UserManager<AppUser>> _userManagerMock = SetupHelper.CreateUserManagerMock();
-        private readonly Mock<RoleManager<IdentityRole>> _roleManagerMock =SetupHelper.CreateRoleManagerMock();
+        private readonly Mock<RoleManager<IdentityRole<Guid>>> _roleManagerMock =SetupHelper.CreateRoleManagerMock();
         private readonly Mock<ITransactionHandler> _transactionHandlerMock = new();
         private readonly Mock<IDomainEventCollector> _domainEventCollectorMock = new();
 

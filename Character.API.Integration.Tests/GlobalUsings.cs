@@ -1,0 +1,12 @@
+﻿global using Character.API.Entities;
+global using Character.API.Features.CreateCharacter;
+global using Common.CQRS;
+global using Microsoft.Extensions.DependencyInjection;
+global using Character.API.Features.DeleteCharacterById;
+global using Character.API.Exceptions;
+global using CharacterEntity = Character.API.Entities.Character;
+global using Character.API.Features.GetCharactersBySchemaId;
+global using Character.API.Features.GetCharacterById;
+global using Character.API.Features.GetCharactersByUserId;
+global using FastExpressionCompiler;
+global using Character.API.Features.UpdateCharacter;
