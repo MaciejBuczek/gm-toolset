@@ -1,6 +1,6 @@
 ﻿namespace Character.API.Integration.Tests.Tests
 {
-    public class GetCharacterByIdHandlerIntegrationTests(IntegrationTestsWebAppFactory Factory) :
+    public class GetCharacterByIdHandlerTests(IntegrationTestsWebAppFactory Factory) :
         BaseIntegrationTest<IQueryHandler<GetCharacterByIdQuery, GetCharacterByIdResult>>(Factory)
     {
         private readonly static Guid _characterId = Guid.NewGuid();

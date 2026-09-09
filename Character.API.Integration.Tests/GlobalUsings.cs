@@ -9,3 +9,4 @@ global using Character.API.Features.GetCharactersBySchemaId;
 global using Character.API.Features.GetCharacterById;
 global using Character.API.Features.GetCharactersByUserId;
 global using FastExpressionCompiler;
+global using Character.API.Features.UpdateCharacter;
