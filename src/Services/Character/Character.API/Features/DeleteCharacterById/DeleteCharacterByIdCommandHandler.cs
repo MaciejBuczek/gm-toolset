@@ -1,8 +1,8 @@
 ﻿namespace Character.API.Features.DeleteCharacterById
 {
-    internal record DeleteCharacterByIdResult(bool Success);
-    internal record DeleteCharacterByIdCommand(Guid Id) : ICommand<DeleteCharacterByIdResult>;
-    internal class DeleteCharacterByIdCommandHandler(ICharacterRepository repository) : ICommandHandler<DeleteCharacterByIdCommand, DeleteCharacterByIdResult>
+    public record DeleteCharacterByIdResult(bool Success);
+    public record DeleteCharacterByIdCommand(Guid Id) : ICommand<DeleteCharacterByIdResult>;
+    public class DeleteCharacterByIdCommandHandler(ICharacterRepository repository) : ICommandHandler<DeleteCharacterByIdCommand, DeleteCharacterByIdResult>
     {
         public async Task<DeleteCharacterByIdResult> Handle(DeleteCharacterByIdCommand command, CancellationToken cancellationToken = default)
         {
