@@ -25,7 +25,6 @@ namespace Identity.API.UnitTests.Features
 
             // Assert
             Assert.NotNull(result);
-            Assert.True(result.Succeded);
         }
     }
 }

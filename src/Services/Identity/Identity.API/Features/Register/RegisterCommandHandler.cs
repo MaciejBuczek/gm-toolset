@@ -1,6 +1,6 @@
 ﻿namespace Identity.API.Features.Register
 {
-    public record RegisterCommandResult(bool Succeded);
+    public record RegisterCommandResult(Guid UserId);
     public record RegisterCommand(string Username, string Email, string Password) : ICommand<RegisterCommandResult>;
 
     public class RegisterCommandHandler(IIdentityService IdentityService) : ICommandHandler<RegisterCommand, RegisterCommandResult>
@@ -15,7 +15,7 @@
 
             await IdentityService.CreateUser(user, request.Password, cancellationToken);
 
-            return new RegisterCommandResult(true);
+            return new RegisterCommandResult(user.Id);
         }
     }
 }
