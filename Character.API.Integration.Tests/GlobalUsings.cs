@@ -10,3 +10,7 @@ global using Character.API.Features.GetCharacterById;
 global using Character.API.Features.GetCharactersByUserId;
 global using FastExpressionCompiler;
 global using Character.API.Features.UpdateCharacter;
+global using Microsoft.AspNetCore.Hosting;
+global using Microsoft.AspNetCore.Mvc.Testing;
+global using Testcontainers.PostgreSql;
+global using Character.API.Data;
