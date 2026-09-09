@@ -1,16 +1,16 @@
 ﻿namespace Character.API.Integration.Tests.Tests
 {
-    public class GetCharactersBySchemaIdHandlerTests(IntegrationTestsWebAppFactory Factory) :
-        BaseIntegrationTest<IQueryHandler<GetCharactersBySchemaIdQuery, GetCharactersBySchemaIdResult>>(Factory)
+    public class GetCharactersByUserIdHandlerTests(IntegrationTestsWebAppFactory Factory) :
+        BaseIntegrationTest<IQueryHandler<GetCharactersByUserIdQuery, GetCharactersByUserIdResult>>(Factory)
     {
-        private readonly static Guid _schemaId = Guid.NewGuid();
-        private readonly GetCharactersBySchemaIdQuery _query = new(Id: _schemaId);
+        private readonly static Guid _userId = Guid.NewGuid();
+        private readonly GetCharactersByUserIdQuery _query = new(Id: _userId);
         private readonly CharacterEntity[] _characters = [
             new CharacterEntity()
             {
                 Id = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),
-                SchemaId = _schemaId,
+                UserId = _userId,
+                SchemaId = Guid.NewGuid(),
                 Name = "Glimbo the Goblin",
                 Description = "He is just a wibble gobwin that doesn't drop good items. Pleas don't swing your sword at him, he will die in just one attack",
                 Statistics =
@@ -30,8 +30,8 @@
             new CharacterEntity()
             {
                 Id = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),
-                SchemaId = _schemaId,
+                UserId = _userId,
+                SchemaId = Guid.NewGuid(),
                 Name = "Glombo the Ork",
                 Description = "Big and strong",
                 Statistics =
@@ -58,10 +58,10 @@
         }
 
         [Fact]
-        public async Task Handle_ShouldReturnAllCharactersWithMatchingUserIdFromDatabase()
+        public async Task Handle_ShouldReturnAllCharactersWithMatchingSchemaIdFromDatabase()
         {
             //Arrange
-            foreach(var character in _characters)
+            foreach (var character in _characters)
             {
                 await repository.CreateCharacterAsync(character, default);
             }
@@ -74,7 +74,7 @@
             Assert.NotNull(result?.Characters);
             Assert.Equal(resultArray.Length, _characters.Length);
 
-            for(var i = 0; i < resultArray.Length; i++)
+            for (var i = 0; i < resultArray.Length; i++)
             {
                 Assert.Equal(resultArray[i].Id, _characters[i].Id);
                 Assert.Equal(resultArray[i].UserId, _characters[i].UserId);

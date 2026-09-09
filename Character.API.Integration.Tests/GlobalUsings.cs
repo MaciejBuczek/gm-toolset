@@ -7,3 +7,5 @@ global using Character.API.Exceptions;
 global using CharacterEntity = Character.API.Entities.Character;
 global using Character.API.Features.GetCharactersBySchemaId;
 global using Character.API.Features.GetCharacterById;
+global using Character.API.Features.GetCharactersByUserId;
+global using FastExpressionCompiler;
