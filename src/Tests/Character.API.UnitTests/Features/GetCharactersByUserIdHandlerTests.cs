@@ -16,7 +16,7 @@
             var handler = new GetCharactersByUserIdQueryHandler(_repository.Object);
 
             //Act & Assert
-            await Assert.ThrowsAsync<NotFoundException>(async () => await handler.Handle(query, default));
+            await Assert.ThrowsAsync<CharacterNotFoundException>(async () => await handler.Handle(query, default));
         }
 
         [Fact]
