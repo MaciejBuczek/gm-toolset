@@ -8,8 +8,8 @@ namespace Communication.API.Unit.Tests.Services
         private readonly string _mailTo = "target@email.com";
         private readonly string _subject = "subject";
         private readonly string _htmlContent = "<h1>content</h1>";
-        private readonly Mock<IOptions<AzureCommunicationService>> _optionsProvider = new();
-        private readonly Mock<EmailClient> _emailClient = new();
+        private readonly Mock<IOptions<AzureCommunicationService>> _optionsProviderMock = new();
+        private readonly Mock<EmailClient> _emailClientMock = new();
         private readonly AzureCommunicationService _options = new()
         {
             SenderAddress = "testsender@email.com",
@@ -18,10 +18,10 @@ namespace Communication.API.Unit.Tests.Services
 
         private CommunicationServiceEmailSender GetSender()
         {
-            _optionsProvider.Setup(op => op.Value).Returns(_options);
-            _emailClient.Setup(e => e.SendAsync(WaitUntil.Completed, It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
+            _optionsProviderMock.Setup(op => op.Value).Returns(_options);
+            _emailClientMock.Setup(e => e.SendAsync(WaitUntil.Completed, It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new EmailSendOperation("test-id", Mock.Of<EmailClient>()));
-            return new CommunicationServiceEmailSender(_emailClient.Object, _optionsProvider.Object);
+            return new CommunicationServiceEmailSender(_emailClientMock.Object, _optionsProviderMock.Object);
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace Communication.API.Unit.Tests.Services
             await sender.SendEmailAsync(_mailTo, _subject, _htmlContent);
 
             //Assert
-            _emailClient.Verify(e => e.SendAsync(WaitUntil.Completed, It.Is<EmailMessage>(m =>
+            _emailClientMock.Verify(e => e.SendAsync(WaitUntil.Completed, It.Is<EmailMessage>(m =>
             
                 m.Content.Subject == _subject &&
                 m.Content.Html == _htmlContent &&
@@ -68,10 +68,10 @@ namespace Communication.API.Unit.Tests.Services
         public async Task SenEmailAsyncShouldThrowRetryableExceptionIfInnerSenderThrowsValidRequestFailedException()
         {
             //Arrange
-            _emailClient.Setup(e => e.SendAsync(WaitUntil.Completed, It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
+            _emailClientMock.Setup(e => e.SendAsync(WaitUntil.Completed, It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new RequestFailedException(408, "timeout"));
-            _optionsProvider.Setup(op => op.Value).Returns(_options);
-            var sender = new CommunicationServiceEmailSender(_emailClient.Object, _optionsProvider.Object);
+            _optionsProviderMock.Setup(op => op.Value).Returns(_options);
+            var sender = new CommunicationServiceEmailSender(_emailClientMock.Object, _optionsProviderMock.Object);
 
             //Act, Assert
             await Assert.ThrowsAsync<RetryableException>(async () => await sender.SendEmailAsync(_mailTo, _subject, _htmlContent));
@@ -81,10 +81,10 @@ namespace Communication.API.Unit.Tests.Services
         public async Task SenEmailAsyncShouldThrowRequestFailedExceptionIfInnerSenderThrowsInvalidRequestFailedException()
         {
             //Arrange
-            _emailClient.Setup(e => e.SendAsync(WaitUntil.Completed, It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
+            _emailClientMock.Setup(e => e.SendAsync(WaitUntil.Completed, It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new RequestFailedException(400, "bad-request"));
-            _optionsProvider.Setup(op => op.Value).Returns(_options);
-            var sender = new CommunicationServiceEmailSender(_emailClient.Object, _optionsProvider.Object);
+            _optionsProviderMock.Setup(op => op.Value).Returns(_options);
+            var sender = new CommunicationServiceEmailSender(_emailClientMock.Object, _optionsProviderMock.Object);
 
             //Act, Assert
             await Assert.ThrowsAsync<RequestFailedException>(async () => await sender.SendEmailAsync(_mailTo, _subject, _htmlContent));
@@ -94,10 +94,10 @@ namespace Communication.API.Unit.Tests.Services
         public async Task SenEmailAsyncShouldThrowAnyExceptionIfInnerSenderThrowsNonRequestFailedException()
         {
             //Arrange
-            _emailClient.Setup(e => e.SendAsync(WaitUntil.Completed, It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
+            _emailClientMock.Setup(e => e.SendAsync(WaitUntil.Completed, It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new Exception());
-            _optionsProvider.Setup(op => op.Value).Returns(_options);
-            var sender = new CommunicationServiceEmailSender(_emailClient.Object, _optionsProvider.Object);
+            _optionsProviderMock.Setup(op => op.Value).Returns(_options);
+            var sender = new CommunicationServiceEmailSender(_emailClientMock.Object, _optionsProviderMock.Object);
 
             //Act, Assert
             await Assert.ThrowsAsync<Exception>(async () => await sender.SendEmailAsync(_mailTo, _subject, _htmlContent));
