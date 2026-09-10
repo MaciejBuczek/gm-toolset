@@ -18,11 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+    <ProjectReference Include="..\src\Services\Communication\Communication.API\Communication.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\" />
+    <Using Include="Xunit" />
   </ItemGroup>
 
 </Project>

@@ -22,3 +22,5 @@ global using Microsoft.Extensions.Options;
 global using Communication.API.Emails.Models;
 global using Azure;
 global using Common.Messaging.Exceptions;
+global using Common.Exceptions;
+global using Communication.API.Exceptions;
