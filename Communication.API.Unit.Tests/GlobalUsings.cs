@@ -1,0 +1,9 @@
+﻿global using Azure.Communication.Email;
+global using Communication.API.ConfigurationOptions;
+global using Communication.API.Services;
+global using Microsoft.Extensions.Options;
+global using Moq;
+global using Azure;
+global using Microsoft.AspNetCore.Mvc.Razor;
+global using Microsoft.AspNetCore.Mvc.ViewEngines;
+global using Microsoft.AspNetCore.Mvc.ViewFeatures;

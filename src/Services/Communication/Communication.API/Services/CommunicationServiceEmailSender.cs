@@ -4,14 +4,21 @@
     {
         public async Task SendEmailAsync(string mailTo, string subject, string htmlContent, CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrEmpty(mailTo))
+            {
+                throw new EmailContentException("Email is missing a target");
+            }
+            if (string.IsNullOrEmpty(subject))
+            {
+                throw new EmailContentException("Email is missing a subject");
+            }
+
             var content = new EmailContent(subject)
             {
                 Html = htmlContent
             };
             var recipients = new EmailRecipients([new EmailAddress(mailTo)]);
             var message = new EmailMessage(ConfigurationOptions.Value.SenderAddress, recipients, content);
-
-            Console.WriteLine(message);
 
             try
             {
